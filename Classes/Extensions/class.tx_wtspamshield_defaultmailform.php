@@ -29,138 +29,143 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_defaultmailform extends tslib_pibase {
+class tx_wtspamshield_defaultmailform extends tslib_pibase
+{
 
-	/**
-	 * @var array
-	 */
-	protected $messages = array();
+    /**
+     * @var array
+     */
+    protected $messages = [];
 
-	/**
-	 * @var tx_wtspamshield_div
-	 */
-	protected $div;
+    /**
+     * @var tx_wtspamshield_div
+     */
+    protected $div;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues = array();
+    /**
+     * @var mixed
+     */
+    public $additionalValues = [];
 
-	/**
-	 * @var string
-	 */
-	public $tsKey = 'standardMailform';
+    /**
+     * @var string
+     */
+    public $tsKey = 'standardMailform';
 
-	/**
-	 * @var mixed
-	 */
-	public $tsConf;
+    /**
+     * @var mixed
+     */
+    public $tsConf;
 
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		$this->tsConf = $this->getDiv()->getTsConf();
-		$honeypotInputName = $this->tsConf['honeypot.']['inputname.'][$this->tsKey];
-		$this->additionalValues['honeypotCheck']['honeypotInputName'] = $honeypotInputName;
-	}
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->tsConf = $this->getDiv()->getTsConf();
+        $honeypotInputName = $this->tsConf['honeypot.']['inputname.'][$this->tsKey];
+        $this->additionalValues['honeypotCheck']['honeypotInputName'] = $honeypotInputName;
+    }
 
-	/**
-	 * getDiv
-	 * 
-	 * @return tx_wtspamshield_div
-	 */
-	protected function getDiv() {
-		if (!isset($this->div)) {
-			$this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
-		}
-		return $this->div;
-	}
+    /**
+     * getDiv
+     *
+     * @return tx_wtspamshield_div
+     */
+    protected function getDiv()
+    {
+        if (!isset($this->div)) {
+            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+        }
+        return $this->div;
+    }
 
-	/**
-	 * Function generateSession() is called if the form is
-	 * rendered (generate a session)
-	 *
-	 * @param string $content
-	 * @param array $configuration
-	 * @return string
-	 */
-	public function generateSession($content, array $configuration = NULL) {
-		if ( $this->getDiv()->isActivated($this->tsKey) ) {
-			$forceValue = !(isset($configuration['ifOutdated']) && $configuration['ifOutdated']);
+    /**
+     * Function generateSession() is called if the form is
+     * rendered (generate a session)
+     *
+     * @param string $content
+     * @param array $configuration
+     * @return string
+     */
+    public function generateSession($content, array $configuration = null)
+    {
+        if ($this->getDiv()->isActivated($this->tsKey)) {
+            $forceValue = !(isset($configuration['ifOutdated']) && $configuration['ifOutdated']);
 
-				// Set session on form create
-			$methodSessionInstance = t3lib_div::makeInstance('tx_wtspamshield_method_session');
-			$methodSessionInstance->setSessionTime($forceValue);
-			$methodSessionInstance->saveCurrentTSInSession('standardMailform');
-		}
+                // Set session on form create
+            $methodSessionInstance = t3lib_div::makeInstance('tx_wtspamshield_method_session');
+            $methodSessionInstance->setSessionTime($forceValue);
+            $methodSessionInstance->saveCurrentTSInSession('standardMailform');
+        }
 
-		return $content;
-	}
+        return $content;
+    }
 
-	/**
-	 * Function sendFormmail_preProcessVariables() is called after
-	 * submit - stop mail if needed
-	 *
-	 * @param object $form Form Object
-	 * @param object $obj Parent Object
-	 * @param array $legacyConfArray legacy configuration
-	 * @return object $form
-	 */
-	public function sendFormmail_preProcessVariables($form, $obj, $legacyConfArray = array()) {
-		if ( $this->getDiv()->isActivated($this->tsKey, TRUE) ) {
-			$error = $this->validate($form);
+    /**
+     * Function sendFormmail_preProcessVariables() is called after
+     * submit - stop mail if needed
+     *
+     * @param object $form Form Object
+     * @param object $obj Parent Object
+     * @param array $legacyConfArray legacy configuration
+     * @return object $form
+     */
+    public function sendFormmail_preProcessVariables($form, $obj, $legacyConfArray = [])
+    {
+        if ($this->getDiv()->isActivated($this->tsKey, true)) {
+            $error = $this->validate($form);
 
-				// 2c. Redirect and stop mail sending
-			if (strlen($error) > 0) {
-				$sessionKey = 'wt_spamshield_enable_' . $this->tsKey;
-				$sessionValue = $GLOBALS['TSFE']->fe_user->getKey('ses', $sessionKey);
-				if ($sessionValue) {
-					$this->tsConf = $sessionValue;
-				}
-				$link = (strlen($this->tsConf['redirect.'][$this->tsKey]) > 0
-					? $this->tsConf['redirect.'][$this->tsKey]
-					: t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
-				header('HTTP/1.1 301 Moved Permanently');
-				header('Location: ' . $link);
-				header('Connection: close');
-				return FALSE;
-			}
-		}
+                // 2c. Redirect and stop mail sending
+            if (strlen($error) > 0) {
+                $sessionKey = 'wt_spamshield_enable_' . $this->tsKey;
+                $sessionValue = $GLOBALS['TSFE']->fe_user->getKey('ses', $sessionKey);
+                if ($sessionValue) {
+                    $this->tsConf = $sessionValue;
+                }
+                $link = (strlen($this->tsConf['redirect.'][$this->tsKey]) > 0
+                    ? $this->tsConf['redirect.'][$this->tsKey]
+                    : t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+                header('HTTP/1.1 301 Moved Permanently');
+                header('Location: ' . $link);
+                header('Connection: close');
+                return false;
+            }
+        }
 
-		return $form;
-	}
+        return $form;
+    }
 
-	/**
-	 * validate
-	 * 
-	 * @param array $fieldValues
-	 * @return string
-	 */
-	protected function validate(array $fieldValues) {
+    /**
+     * validate
+     *
+     * @param array $fieldValues
+     * @return string
+     */
+    protected function validate(array $fieldValues)
+    {
 
-		$availableValidators =
-			array(
-				'blacklistCheck',
-				'httpCheck',
-				'uniqueCheck',
-				'sessionCheck',
-				'honeypotCheck',
-			);
+        $availableValidators =
+            [
+                'blacklistCheck',
+                'httpCheck',
+                'uniqueCheck',
+                'sessionCheck',
+                'honeypotCheck',
+            ];
 
-		$tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '_old.']['enable']);
+        $tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '_old.']['enable']);
 
-		$processor = $this->getDiv()->getProcessor();
-		$processor->tsKey = $this->tsKey;
-		$processor->fieldValues = $fieldValues;
-		$processor->additionalValues = $this->additionalValues;
-		$processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '_old.']['how_many_validators_can_fail']);
-		$processor->methodes = array_intersect($tsValidators, $availableValidators);
+        $processor = $this->getDiv()->getProcessor();
+        $processor->tsKey = $this->tsKey;
+        $processor->fieldValues = $fieldValues;
+        $processor->additionalValues = $this->additionalValues;
+        $processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '_old.']['how_many_validators_can_fail']);
+        $processor->methodes = array_intersect($tsValidators, $availableValidators);
 
-		$error = $processor->validate();
-		return $error;
-	}
-}
+        $error = $processor->validate();
+        return $error;
+    }
 }

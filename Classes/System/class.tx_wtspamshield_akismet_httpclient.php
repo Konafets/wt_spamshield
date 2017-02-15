@@ -29,120 +29,127 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_akismet_httpclient extends tx_wtspamshield_akismet_object {
-	/**
-	 * @var string
-	 */
-	public $akismetVersion = '1.1';
+class tx_wtspamshield_akismet_httpclient extends tx_wtspamshield_akismet_object
+{
+    /**
+     * @var string
+     */
+    public $akismetVersion = '1.1';
 
-	/**
-	 * @var mixed
-	 */
-	public $con;
+    /**
+     * @var mixed
+     */
+    public $con;
 
-	/**
-	 * @var string
-	 */
-	public $host;
+    /**
+     * @var string
+     */
+    public $host;
 
-	/**
-	 * @var integer
-	 */
-	public $port;
+    /**
+     * @var integer
+     */
+    public $port;
 
-	/**
-	 * @var string
-	 */
-	public $apiKey;
+    /**
+     * @var string
+     */
+    public $apiKey;
 
-	/**
-	 * @var string
-	 */
-	public $blogUrl;
+    /**
+     * @var string
+     */
+    public $blogUrl;
 
-	/**
-	 * @var mixed
-	 */
-	public $errors = array();
+    /**
+     * @var mixed
+     */
+    public $errors = [];
 
-	/**
-	 * Constructor
-	 *
-	 * @param integer $port
-	 * @return void
-	 */
-	public function __construct($port = 80) {
-		$this->port = $port;
-	}
+    /**
+     * Constructor
+     *
+     * @param integer $port
+     * @return void
+     */
+    public function __construct($port = 80)
+    {
+        $this->port = $port;
+    }
 
-	/**
-	 * Use the connection active in $con to get a response from the
-	 * server and return that response
-	 *
-	 * @param mixed $request
-	 * @param string $url
-	 * @param string $type
-	 * @return mixed
-	 */
-	public function getResponse($request, $url) {
-		$this->connect();
+    /**
+     * Use the connection active in $con to get a response from the
+     * server and return that response
+     *
+     * @param mixed $request
+     * @param string $url
+     * @param string $type
+     * @return mixed
+     */
+    public function getResponse($request, $url)
+    {
+        $this->connect();
 
-		if ($this->con && !$this->isError(AKISMET_SERVER_NOT_FOUND)) {
-			curl_setopt($this->con, CURLOPT_URL, $url);
-			curl_setopt($this->con, CURLOPT_POSTFIELDS, $request);
+        if ($this->con && !$this->isError(AKISMET_SERVER_NOT_FOUND)) {
+            curl_setopt($this->con, CURLOPT_URL, $url);
+            curl_setopt($this->con, CURLOPT_POSTFIELDS, $request);
 
-			if(!$response = curl_exec($this->con)) {
-				$this->setError(AKISMET_RESPONSE_FAILED, 'The response could not be retrieved.');
-				return;
-			}
+            if (!$response = curl_exec($this->con)) {
+                $this->setError(AKISMET_RESPONSE_FAILED, 'The response could not be retrieved.');
+                return;
+            }
 
-			$this->disconnect();
-			return $response;
-		}
-	}
+            $this->disconnect();
+            return $response;
+        }
+    }
 
     /**
      * Initializes a new cURL session/handle
      *
-     * @return	boolean
+     * @return  boolean
     */
-    public function connect() {
-		if (!is_resource($this->con)) {
-			if(!$this->con = curl_init()) {
-			   $this->setError(AKISMET_SERVER_NOT_FOUND, 'Could not connect to akismet server.');
-			   return;
-			}
-		}
+    public function connect()
+    {
+        if (!is_resource($this->con)) {
+            if (!$this->con = curl_init()) {
+                $this->setError(AKISMET_SERVER_NOT_FOUND, 'Could not connect to akismet server.');
+                return;
+            }
+        }
 
-		curl_setopt($this->con, CURLOPT_HEADER, 0);
-		curl_setopt($this->con, CURLOPT_POST, 1);
-		curl_setopt($this->con, CURLOPT_TIMEOUT, 0); 
-		curl_setopt($this->con, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($this->con, CURLOPT_USERAGENT, 
-					"Akismet PHP4 Class");
-		curl_setopt($this->con, CURLOPT_FRESH_CONNECT, 1);
+        curl_setopt($this->con, CURLOPT_HEADER, 0);
+        curl_setopt($this->con, CURLOPT_POST, 1);
+        curl_setopt($this->con, CURLOPT_TIMEOUT, 0);
+        curl_setopt($this->con, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt(
+            $this->con,
+            CURLOPT_USERAGENT,
+            "Akismet PHP4 Class"
+        );
+        curl_setopt($this->con, CURLOPT_FRESH_CONNECT, 1);
 
-		if ($this->port != 80) {
-			curl_setopt($this->con, CURLOPT_PORT, $this->port);
-		}
+        if ($this->port != 80) {
+            curl_setopt($this->con, CURLOPT_PORT, $this->port);
+        }
 
-		return true;
+        return true;
     }
 
-	/**
-	 * Close the connection to the Akismet server
-	 *
-	 * @return void
-	 */
-	public function disconnect() {
-		if (is_resource($this->con)) {
-			if (!curl_close($this->con)) {
-				$this->setError(AKISMET_SERVER_NOT_FOUND, 'Could not close the CURL instance');
-				return;
-			}
-		}
+    /**
+     * Close the connection to the Akismet server
+     *
+     * @return void
+     */
+    public function disconnect()
+    {
+        if (is_resource($this->con)) {
+            if (!curl_close($this->con)) {
+                $this->setError(AKISMET_SERVER_NOT_FOUND, 'Could not close the CURL instance');
+                return;
+            }
+        }
 
-		return true;
-	}
-}
+        return true;
+    }
 }

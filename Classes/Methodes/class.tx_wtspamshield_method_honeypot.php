@@ -29,74 +29,75 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_method_honeypot extends tx_wtspamshield_method_abstract {
+class tx_wtspamshield_method_honeypot extends tx_wtspamshield_method_abstract
+{
 
-	/**
-	 * @var mixed
-	 */
-	public $fieldValues;
+    /**
+     * @var mixed
+     */
+    public $fieldValues;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues;
+    /**
+     * @var mixed
+     */
+    public $additionalValues;
 
-	/**
-	 * @var string
-	 */
-	public $tsKey;
+    /**
+     * @var string
+     */
+    public $tsKey;
 
-	/**
-	 * Function createHoneypot() creates a non-visible input field
-	 *
-	 * @return string $code Return form field (honeypot)
-	 */
-	public function createHoneypot() {
-		$tsConf = $this->getDiv()->getTsConf();
-		$cObjType = $tsConf['honeypot.']['explanation'];
-		$cObjvalues = $tsConf['honeypot.']['explanation.'];
-		$lll = $cObjvalues['value'];
-		$cObjvalues['value'] = $this->getL10n($lll);
-		$code = $this->cObj->cObjGetSingle($cObjType, $cObjvalues);
+    /**
+     * Function createHoneypot() creates a non-visible input field
+     *
+     * @return string $code Return form field (honeypot)
+     */
+    public function createHoneypot()
+    {
+        $tsConf = $this->getDiv()->getTsConf();
+        $cObjType = $tsConf['honeypot.']['explanation'];
+        $cObjvalues = $tsConf['honeypot.']['explanation.'];
+        $lll = $cObjvalues['value'];
+        $cObjvalues['value'] = $this->getL10n($lll);
+        $code = $this->cObj->cObjGetSingle($cObjType, $cObjvalues);
 
-		$doctypePart = substr($GLOBALS['TSFE']->config['config']['doctype'], 0, 5);
+        $doctypePart = substr($GLOBALS['TSFE']->config['config']['doctype'], 0, 5);
 
-		$code .= '<input type="text" name="';
-		$code .= $this->additionalValues['prefixInputName'] . '[' . $this->additionalValues['honeypotInputName'] . ']"';
-		$code .= ' ' . $tsConf['honeypot.']['css.']['inputStyle'];
-		$code .= ' ' . $tsConf['honeypot.']['css.']['inputClass'];
-		$code .= ' ' . $tsConf['honeypot.']['additionalParams.']['standard'];
+        $code .= '<input type="text" name="';
+        $code .= $this->additionalValues['prefixInputName'] . '[' . $this->additionalValues['honeypotInputName'] . ']"';
+        $code .= ' ' . $tsConf['honeypot.']['css.']['inputStyle'];
+        $code .= ' ' . $tsConf['honeypot.']['css.']['inputClass'];
+        $code .= ' ' . $tsConf['honeypot.']['additionalParams.']['standard'];
 
-		if ($doctypePart == 'html5') {
-			$code .= ' ' . $tsConf['honeypot.']['additionalParams.']['html5'];
-		}
+        if ($doctypePart == 'html5') {
+            $code .= ' ' . $tsConf['honeypot.']['additionalParams.']['html5'];
+        }
 
-		$code .= ' value=""';
+        $code .= ' value=""';
 
-		if ($doctypePart == 'xhtml') {
-			$code .= ' />';
-		} else {
-			$code .= ' >';
-		}
+        if ($doctypePart == 'xhtml') {
+            $code .= ' />';
+        } else {
+            $code .= ' >';
+        }
 
-		return $code;
-	}
+        return $code;
+    }
 
-	/**
-	 * Function validate() checks if a fly is in the honeypot
-	 *
-	 * @return string $error Return errormessage if error exists
-	 */
-	public function validate() {
+    /**
+     * Function validate() checks if a fly is in the honeypot
+     *
+     * @return string $error Return errormessage if error exists
+     */
+    public function validate()
+    {
 
-		if (strlen($this->fieldValues[$this->additionalValues['honeypotInputName']]) > 0) {
-			$tsConf = $this->getDiv()->getTsConf();
-			return $this->renderCobj($tsConf['errors.'], 'honeypot');
-		}
-		unset($this->fieldValues[$this->additionalValues['honeypotInputName']]);
+        if (strlen($this->fieldValues[$this->additionalValues['honeypotInputName']]) > 0) {
+            $tsConf = $this->getDiv()->getTsConf();
+            return $this->renderCobj($tsConf['errors.'], 'honeypot');
+        }
+        unset($this->fieldValues[$this->additionalValues['honeypotInputName']]);
 
-		return '';
-	}
-}
-
+        return '';
+    }
 }

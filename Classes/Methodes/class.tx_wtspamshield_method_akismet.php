@@ -29,67 +29,67 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_method_akismet extends tx_wtspamshield_method_abstract {
+class tx_wtspamshield_method_akismet extends tx_wtspamshield_method_abstract
+{
 
-	/**
-	 * @var mixed
-	 */
-	public $fieldValues;
+    /**
+     * @var mixed
+     */
+    public $fieldValues;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues;
+    /**
+     * @var mixed
+     */
+    public $additionalValues;
 
-	/**
-	 * @var string
-	 */
-	public $tsKey;
+    /**
+     * @var string
+     */
+    public $tsKey;
 
-	/**
-	 * Function validate() send form values to akismet server and
-	 * waits for the feedback if it's spam or not
-	 *
-	 * @return string $error Return errormessage if error exists
-	 */
-	public function validate() {
-		$error = '';
+    /**
+     * Function validate() send form values to akismet server and
+     * waits for the feedback if it's spam or not
+     *
+     * @return string $error Return errormessage if error exists
+     */
+    public function validate()
+    {
+        $error = '';
 
-		$akismetArray = array();
-		$tsConf = $this->getDiv()->getTsConf();
+        $akismetArray = [];
+        $tsConf = $this->getDiv()->getTsConf();
 
-			// Get field mapping from TS
-		$fields = $tsConf['fields.'][$this->tsKey . '.'];
-		foreach ($fields as $key => $value) {
-			if ($value && array_key_exists($value, $this->fieldValues)) {
-				$akismetArray[$key] = $this->fieldValues[$value];
-			}
-		}
+            // Get field mapping from TS
+        $fields = $tsConf['fields.'][$this->tsKey . '.'];
+        foreach ($fields as $key => $value) {
+            if ($value && array_key_exists($value, $this->fieldValues)) {
+                $akismetArray[$key] = $this->fieldValues[$value];
+            }
+        }
 
-		$akismetArray += array(
-			'user_ip' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-			'user_agent' => t3lib_div::getIndpEnv('HTTP_USER_AGENT')
-		);
+        $akismetArray += [
+            'user_ip' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
+            'user_agent' => t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+        ];
 
-		if ((int) $tsConf['akismetCheck.']['testMode'] == 1) {
-			$akismetArray['is_test'] = 1;
-		}
+        if ((int) $tsConf['akismetCheck.']['testMode'] == 1) {
+            $akismetArray['is_test'] = 1;
+        }
 
-		$akismet = new tx_wtspamshield_akismet(
-			'http://' . t3lib_div::getIndpEnv('HTTP_HOST') . '/',
-			$tsConf['akismetCheck.']['akismetKey'],
-			$akismetArray
-		);
+        $akismet = new tx_wtspamshield_akismet(
+            'http://' . t3lib_div::getIndpEnv('HTTP_HOST') . '/',
+            $tsConf['akismetCheck.']['akismetKey'],
+            $akismetArray
+        );
 
-		if (!$akismet->isError() && $akismet->isSpam()) {
-			$error = $this->renderCobj($tsConf['errors.'], 'akismet');
-		}
+        if (!$akismet->isError() && $akismet->isSpam()) {
+            $error = $this->renderCobj($tsConf['errors.'], 'akismet');
+        }
 
-		if (isset($error)) {
-			return $error;
-		}
-		return '';
-	}
-
-}
+        if (isset($error)) {
+            return $error;
+        }
+        return '';
+    }
 }

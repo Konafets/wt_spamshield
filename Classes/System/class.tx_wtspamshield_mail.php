@@ -29,39 +29,41 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_mail extends tslib_pibase {
+class tx_wtspamshield_mail extends tslib_pibase
+{
 
-	/**
-	 * @var string
-	 */
-	public $extKey = 'wt_spamshield';
+    /**
+     * @var string
+     */
+    public $extKey = 'wt_spamshield';
 
-	/**
-	 * @var integer
-	 */
-	public $sendEmail = 1;
+    /**
+     * @var integer
+     */
+    public $sendEmail = 1;
 
-	/**
-	 * Function sendEmail sends a notify mail to the admin if spam was recognized
-	 * 
-	 * @param string $ext Name of extension in which the spam was recognized
-	 * @param integer $points 
-	 * @param string $errorMessages Error Message
-	 * @param array $formArray Array with submitted values
-	 * @param boolean $sendPlain Plain instead of HTML mails
-	 * @return void
-	 */
-	public function sendEmail($ext, $points, $errorMessages, $formArray, $sendPlain = 1) {
-		$div = t3lib_div::makeInstance('tx_wtspamshield_div');
-		$tsConf = $div->getTsConf();
+    /**
+     * Function sendEmail sends a notify mail to the admin if spam was recognized
+     *
+     * @param string $ext Name of extension in which the spam was recognized
+     * @param integer $points
+     * @param string $errorMessages Error Message
+     * @param array $formArray Array with submitted values
+     * @param boolean $sendPlain Plain instead of HTML mails
+     * @return void
+     */
+    public function sendEmail($ext, $points, $errorMessages, $formArray, $sendPlain = 1)
+    {
+        $div = t3lib_div::makeInstance('tx_wtspamshield_div');
+        $tsConf = $div->getTsConf();
 
-		$errorMessages['points'] = 'Score: ' . $points;
-		$errorMessages = strip_tags(implode(' / ', $errorMessages));
+        $errorMessages['points'] = 'Score: ' . $points;
+        $errorMessages = strip_tags(implode(' / ', $errorMessages));
 
-		if (t3lib_div::validEmail($tsConf['logging.']['notificationAddress'])) {
-			if (!$sendPlain) {
-					// Prepare mail
-				$mailtext = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+        if (t3lib_div::validEmail($tsConf['logging.']['notificationAddress'])) {
+            if (!$sendPlain) {
+                    // Prepare mail
+                $mailtext = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 					<html>
 						<head>
 						</head>
@@ -100,44 +102,41 @@ class tx_wtspamshield_mail extends tslib_pibase {
 					</html>
 				';
 
-					// Send mail
-				$this->htmlMail = t3lib_div::makeInstance('t3lib_htmlmail');
-				$this->htmlMail->start();
-				$this->htmlMail->recipient = $tsConf['logging.']['notificationAddress'];
-				$this->htmlMail->subject = 'Spam recognized in ' . $ext . ' on ' . t3lib_div::getIndpEnv('HTTP_HOST');
-				$this->htmlMail->from_email = $tsConf['logging.']['notificationAddress'];
-				$this->htmlMail->from_name = 'Spamshield';
-				$this->htmlMail->returnPath = $tsConf['logging.']['notificationAddress'];
-				$this->htmlMail->setHTML($mailtext);
-				if ($this->sendEmail) {
-					$this->htmlMail->send($tsConf['logging.']['notificationAddress']);
-				}
-			} else {
-				$info = array(
-					'Extension' => $ext,
-					'PID' => $GLOBALS['TSFE']->id,
-					'URL' => t3lib_div::getIndpEnv('HTTP_HOST'),
-					'Error' => $errorMessages,
-					'IP' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-					'Useragent' => t3lib_div::getIndpEnv('HTTP_USER_AGENT'),
-				);
-				foreach ($info as $key => $value) {
-					$mailtext .= $key . ': ' . $value . chr(10);
-				}
-				$mailtext .= chr(10) . 'Form values:' . chr(10);
-				foreach ($formArray as $key => $value) {
-					$mailtext .= ' * ' . $key . ': ' . $value . chr(10);
-				}
+                    // Send mail
+                $this->htmlMail = t3lib_div::makeInstance('t3lib_htmlmail');
+                $this->htmlMail->start();
+                $this->htmlMail->recipient = $tsConf['logging.']['notificationAddress'];
+                $this->htmlMail->subject = 'Spam recognized in ' . $ext . ' on ' . t3lib_div::getIndpEnv('HTTP_HOST');
+                $this->htmlMail->from_email = $tsConf['logging.']['notificationAddress'];
+                $this->htmlMail->from_name = 'Spamshield';
+                $this->htmlMail->returnPath = $tsConf['logging.']['notificationAddress'];
+                $this->htmlMail->setHTML($mailtext);
+                if ($this->sendEmail) {
+                    $this->htmlMail->send($tsConf['logging.']['notificationAddress']);
+                }
+            } else {
+                $info = [
+                    'Extension' => $ext,
+                    'PID' => $GLOBALS['TSFE']->id,
+                    'URL' => t3lib_div::getIndpEnv('HTTP_HOST'),
+                    'Error' => $errorMessages,
+                    'IP' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
+                    'Useragent' => t3lib_div::getIndpEnv('HTTP_USER_AGENT'),
+                ];
+                foreach ($info as $key => $value) {
+                    $mailtext .= $key . ': ' . $value . chr(10);
+                }
+                $mailtext .= chr(10) . 'Form values:' . chr(10);
+                foreach ($formArray as $key => $value) {
+                    $mailtext .= ' * ' . $key . ': ' . $value . chr(10);
+                }
 
-				$to = $tsConf['logging.']['notificationAddress'];
-				$from = '"Spamshield" <' . $tsConf['logging.']['notificationAddress'] . '>';
-				$subject = 'Spam recognized in ' . $ext . ' on ' . t3lib_div::getIndpEnv('HTTP_HOST');
-				$headers = 'From: ' . $from;
-				mail($to, $subject, $mailtext, $headers);
-			}
-		}
-
-	}
-}
-
+                $to = $tsConf['logging.']['notificationAddress'];
+                $from = '"Spamshield" <' . $tsConf['logging.']['notificationAddress'] . '>';
+                $subject = 'Spam recognized in ' . $ext . ' on ' . t3lib_div::getIndpEnv('HTTP_HOST');
+                $headers = 'From: ' . $from;
+                mail($to, $subject, $mailtext, $headers);
+            }
+        }
+    }
 }

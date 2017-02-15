@@ -29,70 +29,67 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_method_httpcheck extends tx_wtspamshield_method_abstract {
+class tx_wtspamshield_method_httpcheck extends tx_wtspamshield_method_abstract
+{
 
-	/**
-	 * @var mixed
-	 */
-	public $fieldValues;
+    /**
+     * @var mixed
+     */
+    public $fieldValues;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues;
+    /**
+     * @var mixed
+     */
+    public $additionalValues;
 
-	/**
-	 * @var string
-	 */
-	public $tsKey;
+    /**
+     * @var string
+     */
+    public $tsKey;
 
-	/**
-	 * @var string
-	 */
-	public $searchstring = 'http://|https://|ftp.';
+    /**
+     * @var string
+     */
+    public $searchstring = 'http://|https://|ftp.';
 
-	/**
-	 * Function validate()
-	 *
-	 * @return string $error Return errormessage if error exists
-	 */
-	public function validate() {
-		if (isset($this->fieldValues)) {
-			$noOfErrors = 0;
-			$tsConf = $this->getDiv()->getTsConf();
-			$error = $this->renderCobj($tsConf['errors.'], 'httpCheck');
-			$error = sprintf($error, intval($tsConf['httpCheck.']['maximumLinkAmount']));
+    /**
+     * Function validate()
+     *
+     * @return string $error Return errormessage if error exists
+     */
+    public function validate()
+    {
+        if (isset($this->fieldValues)) {
+            $noOfErrors = 0;
+            $tsConf = $this->getDiv()->getTsConf();
+            $error = $this->renderCobj($tsConf['errors.'], 'httpCheck');
+            $error = sprintf($error, intval($tsConf['httpCheck.']['maximumLinkAmount']));
 
-			foreach ((array) $this->fieldValues as $key => $value) {
-				if (!is_array($value)) {
+            foreach ((array) $this->fieldValues as $key => $value) {
+                if (!is_array($value)) {
+                    $result = [];
+                    preg_match_all('@' . $this->searchstring . '@', strtolower($value), $result);
+                    if (isset($result[0])) {
+                        $noOfErrors += count($result[0]);
+                    }
+                } else {
+                        // ???
+                    if (!is_array($value2)) {
+                        foreach ((array) $this->fieldValues[$key] as $key2 => $value2) {
+                            $result = [];
+                            preg_match_all('@' . $this->searchstring . '@', strtolower($value2), $result);
+                            if (isset($result[0])) {
+                                $noOfErrors += count($result[0]);
+                            }
+                        }
+                    }
+                }
+            }
 
-					$result = array();
-					preg_match_all('@' . $this->searchstring . '@', strtolower($value), $result);
-					if (isset($result[0])) {
-						$noOfErrors += count($result[0]);
-					}
-				} else {
-						// ???
-					if (!is_array($value2)) {
-						foreach ((array) $this->fieldValues[$key] as $key2 => $value2 ) {
-							$result = array();
-							preg_match_all('@' . $this->searchstring . '@', strtolower($value2), $result);
-							if (isset($result[0])) {
-								$noOfErrors += count($result[0]);
-							}
-						}
-					}
-				}
-			}
-
-			if ($noOfErrors > intval($tsConf['httpCheck.']['maximumLinkAmount'])) {
-				return $error;
-			}
-
-		}
-		return '';
-	}
-
-}
-
+            if ($noOfErrors > intval($tsConf['httpCheck.']['maximumLinkAmount'])) {
+                return $error;
+            }
+        }
+        return '';
+    }
 }

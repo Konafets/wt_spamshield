@@ -24,101 +24,102 @@
 
 /**
  * processor
- * 
+ *
  * @author Ralf Zimmermann <ralf.zimmermann@tritum.de>
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_processor {
+class tx_wtspamshield_processor
+{
 
-	/**
-	 * @var string
-	 */
-	public $tsKey;
+    /**
+     * @var string
+     */
+    public $tsKey;
 
-	/**
-	 * @var mixed
-	 */
-	public $fieldValues = array();
+    /**
+     * @var mixed
+     */
+    public $fieldValues = [];
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues = array();
+    /**
+     * @var mixed
+     */
+    public $additionalValues = [];
 
-	/**
-	 * @var int
-	 */
-	public $failureRate;
+    /**
+     * @var int
+     */
+    public $failureRate;
 
-	/**
-	 * @var mixed
-	 */
-	public $methodes = array();
+    /**
+     * @var mixed
+     */
+    public $methodes = [];
 
-	/**
-	 * @var int
-	 */
-	public $currentFailures = 0;
+    /**
+     * @var int
+     */
+    public $currentFailures = 0;
 
-	/**
-	 * @var mixed
-	 */
-	public $errorMessages = array();
+    /**
+     * @var mixed
+     */
+    public $errorMessages = [];
 
-	/**
-	 * log
-	 * 
-	 * @return void
-	 */
-	public function log() {
-		$methodLogInstance = t3lib_div::makeInstance('tx_wtspamshield_log');
-		$methodLogInstance->dbLog($this->tsKey, $this->currentFailures, $this->errorMessages, $this->fieldValues);
+    /**
+     * log
+     *
+     * @return void
+     */
+    public function log()
+    {
+        $methodLogInstance = t3lib_div::makeInstance('tx_wtspamshield_log');
+        $methodLogInstance->dbLog($this->tsKey, $this->currentFailures, $this->errorMessages, $this->fieldValues);
 
-		$methodSendEmailInstance = t3lib_div::makeInstance('tx_wtspamshield_mail');
-		$methodSendEmailInstance->sendEmail($this->tsKey, $this->currentFailures, $this->errorMessages, $this->fieldValues);
-	}
+        $methodSendEmailInstance = t3lib_div::makeInstance('tx_wtspamshield_mail');
+        $methodSendEmailInstance->sendEmail($this->tsKey, $this->currentFailures, $this->errorMessages, $this->fieldValues);
+    }
 
-	/**
-	 * processValidationChain
-	 * 
-	 * @return string
-	 */
-	public function validate() {
-		$errorMessage = '';
+    /**
+     * processValidationChain
+     *
+     * @return string
+     */
+    public function validate()
+    {
+        $errorMessage = '';
 
-		$methodMap = array(
-			'blacklistCheck' => 'tx_wtspamshield_method_blacklist',
-			'nameCheck' => 'tx_wtspamshield_method_namecheck',
-			'httpCheck' => 'tx_wtspamshield_method_httpcheck',
-			'uniqueCheck' => 'tx_wtspamshield_method_unique',
-			'sessionCheck' => 'tx_wtspamshield_method_session',
-			'honeypotCheck' => 'tx_wtspamshield_method_honeypot',
-			'akismetCheck' => 'tx_wtspamshield_method_akismet',
-		);
+        $methodMap = [
+            'blacklistCheck' => 'tx_wtspamshield_method_blacklist',
+            'nameCheck' => 'tx_wtspamshield_method_namecheck',
+            'httpCheck' => 'tx_wtspamshield_method_httpcheck',
+            'uniqueCheck' => 'tx_wtspamshield_method_unique',
+            'sessionCheck' => 'tx_wtspamshield_method_session',
+            'honeypotCheck' => 'tx_wtspamshield_method_honeypot',
+            'akismetCheck' => 'tx_wtspamshield_method_akismet',
+        ];
 
-		foreach ($methodMap as $method => $class) {
-			if( in_array($method, $this->methodes)) {
-				$methodInstance =  t3lib_div::makeInstance($class);
-				$methodInstance->fieldValues = $this->fieldValues;
-				$methodInstance->additionalValues = $this->additionalValues[$method];
-				$methodInstance->tsKey = $this->tsKey;
-				$methodReturn = $methodInstance->validate();
-				if (strlen($methodReturn) > 0) {
-					$this->currentFailures++;
-					$this->errorMessages[] = $methodReturn;
-				}
-				$this->fieldValues = $methodInstance->fieldValues;
-			}
-		}
+        foreach ($methodMap as $method => $class) {
+            if (in_array($method, $this->methodes)) {
+                $methodInstance =  t3lib_div::makeInstance($class);
+                $methodInstance->fieldValues = $this->fieldValues;
+                $methodInstance->additionalValues = $this->additionalValues[$method];
+                $methodInstance->tsKey = $this->tsKey;
+                $methodReturn = $methodInstance->validate();
+                if (strlen($methodReturn) > 0) {
+                    $this->currentFailures++;
+                    $this->errorMessages[] = $methodReturn;
+                }
+                $this->fieldValues = $methodInstance->fieldValues;
+            }
+        }
 
-		if($this->currentFailures > $this->failureRate) {
-			$this->log();
-			$errorMessage = implode(' ', $this->errorMessages);
-		}
+        if ($this->currentFailures > $this->failureRate) {
+            $this->log();
+            $errorMessage = implode(' ', $this->errorMessages);
+        }
 
-		return $errorMessage;
-	}
-}
-
+        return $errorMessage;
+    }
 }

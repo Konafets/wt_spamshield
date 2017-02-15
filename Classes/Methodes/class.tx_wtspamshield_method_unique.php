@@ -29,62 +29,61 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_method_unique extends tx_wtspamshield_method_abstract {
+class tx_wtspamshield_method_unique extends tx_wtspamshield_method_abstract
+{
 
-	/**
-	 * @var mixed
-	 */
-	public $fieldValues;
+    /**
+     * @var mixed
+     */
+    public $fieldValues;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues;
+    /**
+     * @var mixed
+     */
+    public $additionalValues;
 
-	/**
-	 * @var string
-	 */
-	public $tsKey;
+    /**
+     * @var string
+     */
+    public $tsKey;
 
-	/**
-	 * Check if the values are in more fields and return error
-	 *
-	 * @return string $error Return errormessage if error exists
-	 */
-	public function validate() {
-		$found = 0;
-		$wholearray = array();
+    /**
+     * Check if the values are in more fields and return error
+     *
+     * @return string $error Return errormessage if error exists
+     */
+    public function validate()
+    {
+        $found = 0;
+        $wholearray = [];
 
-		$tsConf = $this->getDiv()->getTsConf();
-		$error = $this->renderCobj($tsConf['errors.'], 'uniquecheck');
+        $tsConf = $this->getDiv()->getTsConf();
+        $error = $this->renderCobj($tsConf['errors.'], 'uniquecheck');
 
-		$myFieldArray = t3lib_div::trimExplode(';', $tsConf['uniqueCheck.']['fields'], 1);
-		if (is_array($myFieldArray)) {
-			foreach ($myFieldArray as $myKey => $myValue) {
-				$wholearray = array();
-				$fieldarray = t3lib_div::trimExplode(',', $myValue, 1);
+        $myFieldArray = t3lib_div::trimExplode(';', $tsConf['uniqueCheck.']['fields'], 1);
+        if (is_array($myFieldArray)) {
+            foreach ($myFieldArray as $myKey => $myValue) {
+                $wholearray = [];
+                $fieldarray = t3lib_div::trimExplode(',', $myValue, 1);
 
-				if (is_array($fieldarray)) {
-					foreach ($fieldarray as $key => $value) {
-						if ($this->fieldValues[$value]) {
-							$wholearray[] = $this->fieldValues[$value];
-						}
-					}
-				}
+                if (is_array($fieldarray)) {
+                    foreach ($fieldarray as $key => $value) {
+                        if ($this->fieldValues[$value]) {
+                            $wholearray[] = $this->fieldValues[$value];
+                        }
+                    }
+                }
 
-				if (count($wholearray) != count(array_unique($wholearray))) {
-					$found = 1;
-				}
-			}
-		}
+                if (count($wholearray) != count(array_unique($wholearray))) {
+                    $found = 1;
+                }
+            }
+        }
 
-		if ($found) {
-			return $error;
-		}
+        if ($found) {
+            return $error;
+        }
 
-		return '';
-	}
-
-}
-
+        return '';
+    }
 }

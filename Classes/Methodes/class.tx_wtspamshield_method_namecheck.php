@@ -29,38 +29,38 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_method_namecheck extends tx_wtspamshield_method_abstract {
+class tx_wtspamshield_method_namecheck extends tx_wtspamshield_method_abstract
+{
 
-	/**
-	 * @var mixed
-	 */
-	public $fieldValues;
+    /**
+     * @var mixed
+     */
+    public $fieldValues;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues;
+    /**
+     * @var mixed
+     */
+    public $additionalValues;
 
-	/**
-	 * @var string
-	 */
-	public $tsKey;
+    /**
+     * @var string
+     */
+    public $tsKey;
 
-	/**
-	 * Function validate() to disable the same first- and lastname
-	 *
-	 * @return string $error Return errormessage if error exists
-	 */
-	public function validate() {
-		if ($this->additionalValues['name1'] === $this->additionalValues['name2'] && $this->additionalValues['name1']) {
-			$tsConf = $this->getDiv()->getTsConf();
-			$error = $this->renderCobj($tsConf['errors.'], 'nameCheck');
-		}
+    /**
+     * Function validate() to disable the same first- and lastname
+     *
+     * @return string $error Return errormessage if error exists
+     */
+    public function validate()
+    {
+        if ($this->additionalValues['name1'] === $this->additionalValues['name2'] && $this->additionalValues['name1']) {
+            $tsConf = $this->getDiv()->getTsConf();
+            $error = $this->renderCobj($tsConf['errors.'], 'nameCheck');
+        }
 
-		if (isset($error)) {
-			return $error;
-		}
-	}
-}
-
+        if (isset($error)) {
+            return $error;
+        }
+    }
 }

@@ -1,11 +1,11 @@
 <?php
 if (!defined('TYPO3_MODE')) {
-	die ('Access denied.');
+    die('Access denied.');
 }
 
-$extPath = t3lib_extMgm::extPath('wt_spamshield');
+$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('wt_spamshield');
 
-$return = array(
+$return = [
 'tx_wtspamshield_akismet_object' => $extPath . 'Classes/System/class.tx_wtspamshield_akismet_object.php',
 'tx_wtspamshield_akismet_httpclient' => $extPath . 'Classes/System/class.tx_wtspamshield_akismet_httpclient.php',
 'tx_wtspamshield_akismet' => $extPath . 'Classes/System/class.tx_wtspamshield_akismet.php',
@@ -26,6 +26,6 @@ $return = array(
 'tx_wtspamshield_powermail2' => $extPath . 'Classes/Extensions/class.tx_wtspamshield_powermail2.php',
 'Tx_WtSpamshieldFormhandler_Interceptor_WtSpamshield' => $extPath . 'Classes/Extensions/Tx_WtSpamshieldFormhandler_Interceptor_WtSpamshield.php',
 
-);
+];
 
 return $return;

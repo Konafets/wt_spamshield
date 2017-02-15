@@ -29,86 +29,86 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_method_session extends tx_wtspamshield_method_abstract {
+class tx_wtspamshield_method_session extends tx_wtspamshield_method_abstract
+{
 
-	/**
-	 * @var mixed
-	 */
-	public $fieldValues;
+    /**
+     * @var mixed
+     */
+    public $fieldValues;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues;
+    /**
+     * @var mixed
+     */
+    public $additionalValues;
 
-	/**
-	 * @var string
-	 */
-	public $tsKey;
+    /**
+     * @var string
+     */
+    public $tsKey;
 
-	/**
-	 * Set Timestamp in session (when the form is rendered)
-	 *
-	 * @param boolean $forceValue Whether to force setting the
-	 *                            timestampe in the session
-	 * @return void
-	 */
-	public function setSessionTime($forceValue = TRUE) {
-		$tsConf = $this->getDiv()->getTsConf();
+    /**
+     * Set Timestamp in session (when the form is rendered)
+     *
+     * @param boolean $forceValue Whether to force setting the
+     *                            timestampe in the session
+     * @return void
+     */
+    public function setSessionTime($forceValue = true)
+    {
+        $tsConf = $this->getDiv()->getTsConf();
 
-		$sessionEndTime = intval($tsConf['sessionCheck.']['sessionEndTime']);
-		$timeStamp = intval($GLOBALS['TSFE']->fe_user->getKey('ses', 'wt_spamshield_form_tstamp'));
-		$isOutdated = ($timeStamp + $sessionEndTime < time());
+        $sessionEndTime = intval($tsConf['sessionCheck.']['sessionEndTime']);
+        $timeStamp = intval($GLOBALS['TSFE']->fe_user->getKey('ses', 'wt_spamshield_form_tstamp'));
+        $isOutdated = ($timeStamp + $sessionEndTime < time());
 
-		if ($forceValue || $isOutdated) {
-			$GLOBALS['TSFE']->fe_user->setKey('ses', 'wt_spamshield_form_tstamp', time());
-			$GLOBALS['TSFE']->storeSessionData();
-		}
+        if ($forceValue || $isOutdated) {
+            $GLOBALS['TSFE']->fe_user->setKey('ses', 'wt_spamshield_form_tstamp', time());
+            $GLOBALS['TSFE']->storeSessionData();
+        }
+    }
 
-	}
+    /**
+     * Save the current Page TS in session (when the form is rendered)
+     *
+     * @param string $key
+     * @return void
+     */
+    public function saveCurrentTSInSession($key)
+    {
+        $key = 'wt_spamshield_enable_' . $key;
+        $value = $GLOBALS['TSFE']->tmpl->setup['plugin.']['wt_spamshield.'];
+        $GLOBALS['TSFE']->fe_user->setKey('ses', $key, $value);
+        $GLOBALS['TSFE']->storeSessionData();
+    }
 
-	/**
-	 * Save the current Page TS in session (when the form is rendered)
-	 *
-	 * @param string $key
-	 * @return void
-	 */
-	public function saveCurrentTSInSession($key) {
-		$key = 'wt_spamshield_enable_' . $key;
-		$value = $GLOBALS['TSFE']->tmpl->setup['plugin.']['wt_spamshield.'];
-		$GLOBALS['TSFE']->fe_user->setKey('ses', $key, $value);
-		$GLOBALS['TSFE']->storeSessionData();
-	}
+    /**
+     * Return Errormessage if session it runned out
+     *
+     * @return string $error Return errormessage if error exists
+     */
+    public function validate()
+    {
+        $error = '';
 
-	/**
-	 * Return Errormessage if session it runned out
-	 * 
-	 * @return string $error Return errormessage if error exists
-	 */
-	public function validate() {
-		$error = '';
+        $sessTstamp = intval($GLOBALS['TSFE']->fe_user->getKey('ses', 'wt_spamshield_form_tstamp'));
+        $tsConf = $this->getDiv()->getTsConf();
 
-		$sessTstamp = intval($GLOBALS['TSFE']->fe_user->getKey('ses', 'wt_spamshield_form_tstamp'));
-		$tsConf = $this->getDiv()->getTsConf();
+        $sessionStartTime = intval($tsConf['sessionCheck.']['sessionStartTime']);
+        $sessionEndTime = intval($tsConf['sessionCheck.']['sessionEndTime']);
 
-		$sessionStartTime = intval($tsConf['sessionCheck.']['sessionStartTime']);
-		$sessionEndTime = intval($tsConf['sessionCheck.']['sessionEndTime']);
+        if ($sessTstamp > 0) {
+            if ((($sessTstamp + $sessionEndTime) < time()) && ($sessionEndTime > 0)) {
+                $error = $this->renderCobj($tsConf['errors.'], 'session_error_1');
+            } elseif ((($sessTstamp + $sessionStartTime) > time())
+                        && ($sessionStartTime > 0)
+            ) {
+                $error = $this->renderCobj($tsConf['errors.'], 'session_error_2');
+            }
+        } else {
+            $error = $this->renderCobj($tsConf['errors.'], 'session_error_3');
+        }
 
-		if ($sessTstamp > 0) {
-			if ((($sessTstamp + $sessionEndTime) < time()) && ($sessionEndTime > 0)) {
-				$error = $this->renderCobj($tsConf['errors.'], 'session_error_1');
-			} elseif ( (($sessTstamp + $sessionStartTime) > time())
-						&& ($sessionStartTime > 0)
-			) {
-				$error = $this->renderCobj($tsConf['errors.'], 'session_error_2');
-			}
-		} else {
-			$error = $this->renderCobj($tsConf['errors.'], 'session_error_3');
-		}
-
-		return $error;
-	}
-
-}
-
+        return $error;
+    }
 }

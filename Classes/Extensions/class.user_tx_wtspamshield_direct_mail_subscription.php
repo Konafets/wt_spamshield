@@ -29,136 +29,141 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class user_tx_wtspamshield_direct_mail_subscription extends user_feAdmin {
+class user_tx_wtspamshield_direct_mail_subscription extends user_feAdmin
+{
 
-	/**
-	 * @var tx_wtspamshield_div
-	 */
-	protected $div;
+    /**
+     * @var tx_wtspamshield_div
+     */
+    protected $div;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues = array();
+    /**
+     * @var mixed
+     */
+    public $additionalValues = [];
 
-	/**
-	 * @var string
-	 */
-	public $tsKey = 'direct_mail_subscription';
+    /**
+     * @var string
+     */
+    public $tsKey = 'direct_mail_subscription';
 
-	/**
-	 * @var mixed
-	 */
-	public $tsConf;
+    /**
+     * @var mixed
+     */
+    public $tsConf;
 
-	/**
-	 * @var string
-	 */
-	public $spamshieldDisplayError;
+    /**
+     * @var string
+     */
+    public $spamshieldDisplayError;
 
-	/**
-	 * @var mixed
-	 */
-	public $parentConf;
+    /**
+     * @var mixed
+     */
+    public $parentConf;
 
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		$this->tsConf = $this->getDiv()->getTsConf();
-		$honeypotInputName = $this->tsConf['honeypot.']['inputname.'][$this->tsKey];
-		$this->additionalValues['honeypotCheck']['prefixInputName'] = 'FE[tt_address]';
-		$this->additionalValues['honeypotCheck']['honeypotInputName'] = $honeypotInputName;
-	}
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->tsConf = $this->getDiv()->getTsConf();
+        $honeypotInputName = $this->tsConf['honeypot.']['inputname.'][$this->tsKey];
+        $this->additionalValues['honeypotCheck']['prefixInputName'] = 'FE[tt_address]';
+        $this->additionalValues['honeypotCheck']['honeypotInputName'] = $honeypotInputName;
+    }
 
-	/**
-	 * getDiv
-	 * 
-	 * @return tx_wtspamshield_div
-	 */
-	protected function getDiv() {
-		if (!isset($this->div)) {
-			$this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
-		}
-		return $this->div;
-	}
+    /**
+     * getDiv
+     *
+     * @return tx_wtspamshield_div
+     */
+    protected function getDiv()
+    {
+        if (!isset($this->div)) {
+            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+        }
+        return $this->div;
+    }
 
-	/**
-	 * displayCreateScreen
-	 * 
-	 * @return mixed
-	 */
-	public function displayCreateScreen() {
+    /**
+     * displayCreateScreen
+     *
+     * @return mixed
+     */
+    public function displayCreateScreen()
+    {
 
-		if ( $this->getDiv()->isActivated($this->tsKey) ) {
-			if (isset($this->parentConf)) {
-				$this->conf['create'] = $this->parentConf;
-			}
-			$methodHoneypotInstance = t3lib_div::makeInstance('tx_wtspamshield_method_honeypot');
-			$methodHoneypotInstance->additionalValues = $this->additionalValues['honeypotCheck'];
-			$this->markerArray['###HIDDENFIELDS###'] .= $methodHoneypotInstance->createHoneypot();
-			if ($this->spamshieldDisplayError) {
-				$this->markerArray['###HIDDENFIELDS###'] .= $this->spamshieldDisplayError;
-			}
-		}
+        if ($this->getDiv()->isActivated($this->tsKey)) {
+            if (isset($this->parentConf)) {
+                $this->conf['create'] = $this->parentConf;
+            }
+            $methodHoneypotInstance = t3lib_div::makeInstance('tx_wtspamshield_method_honeypot');
+            $methodHoneypotInstance->additionalValues = $this->additionalValues['honeypotCheck'];
+            $this->markerArray['###HIDDENFIELDS###'] .= $methodHoneypotInstance->createHoneypot();
+            if ($this->spamshieldDisplayError) {
+                $this->markerArray['###HIDDENFIELDS###'] .= $this->spamshieldDisplayError;
+            }
+        }
 
-		return parent::displayCreateScreen();
-	}
+        return parent::displayCreateScreen();
+    }
 
-	/**
-	 * save
-	 * 
-	 * @return	mixed
-	 */
-	public function save() {
-		$error = '';
+    /**
+     * save
+     *
+     * @return  mixed
+     */
+    public function save()
+    {
+        $error = '';
 
-		if ( $this->getDiv()->isActivated($this->tsKey) ) {
-			$validateArray = $this->dataArr;
-			$error = $this->validate($validateArray);
+        if ($this->getDiv()->isActivated($this->tsKey)) {
+            $validateArray = $this->dataArr;
+            $error = $this->validate($validateArray);
 
-			if (strlen($error) > 0) {
-					// $this->error='###TEMPLATE_NO_PERMISSIONS###';
-				$this->saved = 0;
-				$this->cmd = 'create';
-				$this->parentConf = $this->conf['create'];
-				unset($this->conf['create']);
-				$this->spamshieldDisplayError = $error;
-			}
-		}
+            if (strlen($error) > 0) {
+                    // $this->error='###TEMPLATE_NO_PERMISSIONS###';
+                $this->saved = 0;
+                $this->cmd = 'create';
+                $this->parentConf = $this->conf['create'];
+                unset($this->conf['create']);
+                $this->spamshieldDisplayError = $error;
+            }
+        }
 
-		return parent::save();
-	}
+        return parent::save();
+    }
 
-	/**
-	 * validate
-	 * 
-	 * @param array $fieldValues
-	 * @return string
-	 */
-	protected function validate(array $fieldValues) {
+    /**
+     * validate
+     *
+     * @param array $fieldValues
+     * @return string
+     */
+    protected function validate(array $fieldValues)
+    {
 
-		$availableValidators =
-			array(
-				'blacklistCheck',
-				'httpCheck',
-				'uniqueCheck',
-				'honeypotCheck',
-			);
+        $availableValidators =
+            [
+                'blacklistCheck',
+                'httpCheck',
+                'uniqueCheck',
+                'honeypotCheck',
+            ];
 
-		$tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '.']['enable']);
+        $tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '.']['enable']);
 
-		$processor = $this->getDiv()->getProcessor();
-		$processor->tsKey = $this->tsKey;
-		$processor->fieldValues = $fieldValues;
-		$processor->additionalValues = $this->additionalValues;
-		$processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '.']['how_many_validators_can_fail']);
-		$processor->methodes = array_intersect($tsValidators, $availableValidators);
+        $processor = $this->getDiv()->getProcessor();
+        $processor->tsKey = $this->tsKey;
+        $processor->fieldValues = $fieldValues;
+        $processor->additionalValues = $this->additionalValues;
+        $processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '.']['how_many_validators_can_fail']);
+        $processor->methodes = array_intersect($tsValidators, $availableValidators);
 
-		$error = $processor->validate();
-		return $error;
-	}
-}
+        $error = $processor->validate();
+        return $error;
+    }
 }

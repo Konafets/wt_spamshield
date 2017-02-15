@@ -31,115 +31,121 @@ namespace TYPO3\CMS\Form\Validation;
  * @package tritum
  * @subpackage wt_spamshield
  */
-class WtspamshieldValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator {
+class WtspamshieldValidator extends \TYPO3\CMS\Form\Domain\Validator\AbstractValidator
+{
 
-	/**
-	 * Constant for localisation
-	 *
-	 * @var string
-	 */
-	const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_wtspamshield';
+    /**
+     * Constant for localisation
+     *
+     * @var string
+     */
+    const LOCALISATION_OBJECT_NAME = 'tx_form_system_validate_wtspamshield';
 
-	/**
-	 * @var tx_wtspamshield_div
-	 */
-	protected $div;
+    /**
+     * @var tx_wtspamshield_div
+     */
+    protected $div;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues = array();
+    /**
+     * @var mixed
+     */
+    public $additionalValues = [];
 
-	/**
-	 * @var string
-	 */
-	public $tsKey = 'standardMailform';
+    /**
+     * @var string
+     */
+    public $tsKey = 'standardMailform';
 
-	/**
-	 * @var mixed
-	 */
-	public $tsConf;
+    /**
+     * @var mixed
+     */
+    public $tsConf;
 
-	/**
-	 * Constructor
-	 *
-	 * @param array $arguments
-	 * @return	void
-	 */
-	public function __construct($arguments) {
-		$this->tsConf = $this->getDiv()->getTsConf();
-		$honeypotInputName = $this->tsConf['honeypot.']['inputname.'][$this->tsKey];
-		$this->additionalValues['honeypotCheck']['prefixInputName'] = 'tx_form';
-		$this->additionalValues['honeypotCheck']['honeypotInputName'] = $honeypotInputName;
-		parent::__construct($arguments);
-	}
+    /**
+     * Constructor
+     *
+     * @param array $arguments
+     * @return  void
+     */
+    public function __construct($arguments)
+    {
+        $this->tsConf = $this->getDiv()->getTsConf();
+        $honeypotInputName = $this->tsConf['honeypot.']['inputname.'][$this->tsKey];
+        $this->additionalValues['honeypotCheck']['prefixInputName'] = 'tx_form';
+        $this->additionalValues['honeypotCheck']['honeypotInputName'] = $honeypotInputName;
+        parent::__construct($arguments);
+    }
 
-	/**
-	 * getDiv
-	 * 
-	 * @return tx_wtspamshield_div
-	 */
-	protected function getDiv() {
-		if (!isset($this->div)) {
-			$this->div = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_wtspamshield_div');
-		}
-		return $this->div;
-	}
+    /**
+     * getDiv
+     *
+     * @return tx_wtspamshield_div
+     */
+    protected function getDiv()
+    {
+        if (!isset($this->div)) {
+            $this->div = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_wtspamshield_div');
+        }
 
-	/**
-	 * Returns TRUE if submitted value validates according to rule
-	 *
-	 * @return boolean
-	 * @see tx_form_System_Validate_Interface::isValid()
-	 */
-	public function isValid() {
+        return $this->div;
+    }
 
-		if ( $this->getDiv()->isActivated($this->tsKey) ) {
-			$error = '';
+    /**
+     * Returns TRUE if submitted value validates according to rule
+     *
+     * @param mixed $value
+     * @return bool
+     * @see tx_form_System_Validate_Interface::isValid()
+     */
+    public function isValid($value)
+    {
+        if ($this->getDiv()->isActivated($this->tsKey)) {
+            $error = '';
 
-			if ($this->requestHandler->has($this->fieldName)) {
-				$value = $this->requestHandler->getByMethod($this->fieldName);
-				$validateArray = array(
-					$this->fieldName => $value
-				);
-				$error = $this->validate($validateArray);
-			}
+            if ($this->requestHandler->has($this->fieldName)) {
+                $value = $this->requestHandler->getByMethod($this->fieldName);
+                $validateArray = [
+                    $this->fieldName => $value
+                ];
+                $error = $this->validate($validateArray);
+            }
 
-			if (strlen($error) > 0) {
-				$this->setError('', strip_tags($error));
-				return FALSE;
-			}
-		}
+            if (strlen($error) > 0) {
+                $this->setError('', strip_tags($error));
 
-		return TRUE;
-	}
+                return false;
+            }
+        }
 
-	/**
-	 * validate
-	 * 
-	 * @param array $fieldValues
-	 * @return string
-	 */
-	protected function validate(array $fieldValues) {
+        return true;
+    }
 
-		$availableValidators =
-			array(
-				'blacklistCheck',
-				'httpCheck',
-				'honeypotCheck',
-			);
+    /**
+     * validate
+     *
+     * @param array $fieldValues
+     * @return string
+     */
+    protected function validate(array $fieldValues) {
 
-		$tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '_new.']['enable']);
+        $availableValidators =
+            array(
+                'blacklistCheck',
+                'httpCheck',
+                'honeypotCheck',
+            );
 
-		$processor = $this->getDiv()->getProcessor();
-		$processor->tsKey = $this->tsKey;
-		$processor->fieldValues = $fieldValues;
-		$processor->additionalValues = $this->additionalValues;
-		$processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '_new.']['how_many_validators_can_fail']);
-		$processor->methodes = array_intersect($tsValidators, $availableValidators);
+        $tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '_new.']['enable']);
 
-		$error = $processor->validate();
-		return $error;
-	}
+        $processor = $this->getDiv()->getProcessor();
+        $processor->tsKey = $this->tsKey;
+        $processor->fieldValues = $fieldValues;
+        $processor->additionalValues = $this->additionalValues;
+        $processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '_new.']['how_many_validators_can_fail']);
+        $processor->methodes = array_intersect($tsValidators, $availableValidators);
+
+        $error = $processor->validate();
+        return $error;
+    }
 
 }

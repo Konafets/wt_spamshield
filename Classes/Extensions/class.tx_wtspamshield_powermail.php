@@ -29,140 +29,144 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_powermail extends tslib_pibase {
+class tx_wtspamshield_powermail extends tslib_pibase
+{
 
-	/**
-	 * @var tx_wtspamshield_div
-	 */
-	protected $div;
+    /**
+     * @var tx_wtspamshield_div
+     */
+    protected $div;
 
-	/**
-	 * @var mixed
-	 */
-	public $additionalValues = array();
+    /**
+     * @var mixed
+     */
+    public $additionalValues = [];
 
-	/**
-	 * @var string
-	 */
-	public $tsKey = 'powermail';
+    /**
+     * @var string
+     */
+    public $tsKey = 'powermail';
 
-	/**
-	 * @var mixed
-	 */
-	public $tsConf;
+    /**
+     * @var mixed
+     */
+    public $tsConf;
 
-	/**
-	 * Constructor
-	 *
-	 * @return void
-	 */
-	public function __construct() {
-		$this->tsConf = $this->getDiv()->getTsConf();
-		$honeypotInputName = $this->tsConf['honeypot.']['inputname.'][$this->tsKey];
-		$this->additionalValues['honeypotCheck']['prefixInputName'] = 'tx_powermail_pi1';
-		$this->additionalValues['honeypotCheck']['honeypotInputName'] = $honeypotInputName;
-	}
+    /**
+     * Constructor
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->tsConf = $this->getDiv()->getTsConf();
+        $honeypotInputName = $this->tsConf['honeypot.']['inputname.'][$this->tsKey];
+        $this->additionalValues['honeypotCheck']['prefixInputName'] = 'tx_powermail_pi1';
+        $this->additionalValues['honeypotCheck']['honeypotInputName'] = $honeypotInputName;
+    }
 
-	/**
-	 * getDiv
-	 * 
-	 * @return tx_wtspamshield_div
-	 */
-	protected function getDiv() {
-		if (!isset($this->div)) {
-			$this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
-		}
-		return $this->div;
-	}
+    /**
+     * getDiv
+     *
+     * @return tx_wtspamshield_div
+     */
+    protected function getDiv()
+    {
+        if (!isset($this->div)) {
+            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+        }
+        return $this->div;
+    }
 
-	/**
-	 * Function PM_FormWrapMarkerHook() to manipulate whole formwrap
-	 *
-	 * @param array $outerMarkerArray Marker Array out of the loop from powermail
-	 * @param array &$subpartArray subpartArray Array from powermail
-	 * @param array $conf ts configuration from powermail
-	 * @param array $obj Parent Object
-	 * @return void
-	 */
-	public function PM_FormWrapMarkerHook($outerMarkerArray, &$subpartArray, $conf, $obj) {
+    /**
+     * Function PM_FormWrapMarkerHook() to manipulate whole formwrap
+     *
+     * @param array $outerMarkerArray Marker Array out of the loop from powermail
+     * @param array &$subpartArray subpartArray Array from powermail
+     * @param array $conf ts configuration from powermail
+     * @param array $obj Parent Object
+     * @return void
+     */
+    public function PM_FormWrapMarkerHook($outerMarkerArray, &$subpartArray, $conf, $obj)
+    {
 
-		if ( $this->getDiv()->isActivated($this->tsKey) ) {
-				// Set session on form create
-			$methodSessionInstance = t3lib_div::makeInstance('tx_wtspamshield_method_session');
-			$methodSessionInstance->setSessionTime();
+        if ($this->getDiv()->isActivated($this->tsKey)) {
+                // Set session on form create
+            $methodSessionInstance = t3lib_div::makeInstance('tx_wtspamshield_method_session');
+            $methodSessionInstance->setSessionTime();
 
-				// Add Honeypot
-			$methodHoneypotInstance = t3lib_div::makeInstance('tx_wtspamshield_method_honeypot');
-			$methodHoneypotInstance->additionalValues = $this->additionalValues['honeypotCheck'];
-			$subpartArray['###POWERMAIL_CONTENT###'] .= $methodHoneypotInstance->createHoneypot();
-		}
-	}
+                // Add Honeypot
+            $methodHoneypotInstance = t3lib_div::makeInstance('tx_wtspamshield_method_honeypot');
+            $methodHoneypotInstance->additionalValues = $this->additionalValues['honeypotCheck'];
+            $subpartArray['###POWERMAIL_CONTENT###'] .= $methodHoneypotInstance->createHoneypot();
+        }
+    }
 
 
-	/**
-	 * Function PM_FieldWrapMarkerHook() to manipulate Fieldwraps
-	 *
-	 * @param array $obj Parent Object
-	 * @param array $markerArray Marker Array from powermail
-	 * @param array $sessiondata Values from powermail Session
-	 * @return string If not false is returned, powermail will show
-	 *                an error. If string is returned, powermail will
-	 *                show this string as errormessage
-	 */
-	public function PM_SubmitBeforeMarkerHook($obj, $markerArray = array(), $sessiondata = array()) {
-		$error = '';
+    /**
+     * Function PM_FieldWrapMarkerHook() to manipulate Fieldwraps
+     *
+     * @param array $obj Parent Object
+     * @param array $markerArray Marker Array from powermail
+     * @param array $sessiondata Values from powermail Session
+     * @return string If not false is returned, powermail will show
+     *                an error. If string is returned, powermail will
+     *                show this string as errormessage
+     */
+    public function PM_SubmitBeforeMarkerHook($obj, $markerArray = [], $sessiondata = [])
+    {
+        $error = '';
 
-		if ( $this->getDiv()->isActivated($this->tsKey) ) {
+        if ($this->getDiv()->isActivated($this->tsKey)) {
+            $error = $this->validate($sessiondata);
 
-			$error = $this->validate($sessiondata);
+                // Return Error message if exists
+            if (strlen($error) > 0) {
+                if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['wt_spamshield']['customMessageOnError'][$this->tsKey])) {
+                    $customError = '';
+                    foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['wt_spamshield']['customMessageOnError'][$this->tsKey] as $_classRef) {
+                        $_procObj = &t3lib_div::getUserObj($_classRef);
+                        $customError .= $_procObj->customMessageOnError($error, $this);
+                    }
+                    return $customError;
+                } else {
+                    return '<div class="wtspamshield-errormsg">' . $error . '</div>';
+                }
+            }
+        }
 
-				// Return Error message if exists
-			if (strlen($error) > 0) {
-				if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['wt_spamshield']['customMessageOnError'][$this->tsKey])) {
-					$customError = '';
-					foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['wt_spamshield']['customMessageOnError'][$this->tsKey] as $_classRef) {
-						$_procObj = &t3lib_div::getUserObj($_classRef);
-						$customError .= $_procObj->customMessageOnError($error, $this);
-					}
-					return $customError;
-				} else {
-					return '<div class="wtspamshield-errormsg">' . $error . '</div>';
-				}
-			}
-		}
+        return false;
+    }
 
-		return FALSE;
-	}
+    /**
+     * validate
+     *
+     * @param array $fieldValues
+     * @return string
+     */
+    protected function validate(array $fieldValues)
+    {
 
-	/**
-	 * validate
-	 * 
-	 * @param array $fieldValues
-	 * @return string
-	 */
-	protected function validate(array $fieldValues) {
+        $availableValidators =
+            [
+                'blacklistCheck',
+                'sessionCheck',
+                'httpCheck',
+                'uniqueCheck',
+                'honeypotCheck',
+                'akismetCheck',
+            ];
 
-		$availableValidators =
-			array(
-				'blacklistCheck',
-				'sessionCheck',
-				'httpCheck',
-				'uniqueCheck',
-				'honeypotCheck',
-				'akismetCheck',
-			);
+        $tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '.']['enable']);
 
-		$tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '.']['enable']);
+        $processor = $this->getDiv()->getProcessor();
+        $processor->tsKey = $this->tsKey;
+        $processor->fieldValues = $fieldValues;
+        $processor->additionalValues = $this->additionalValues;
+        $processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '.']['how_many_validators_can_fail']);
+        $processor->methodes = array_intersect($tsValidators, $availableValidators);
 
-		$processor = $this->getDiv()->getProcessor();
-		$processor->tsKey = $this->tsKey;
-		$processor->fieldValues = $fieldValues;
-		$processor->additionalValues = $this->additionalValues;
-		$processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '.']['how_many_validators_can_fail']);
-		$processor->methodes = array_intersect($tsValidators, $availableValidators);
-
-		$error = $processor->validate();
-		return $error;
-	}
-}
+        $error = $processor->validate();
+        return $error;
+    }
 }

@@ -24,9 +24,9 @@
 
 /**
  * 01.26.2006 12:29:28est
- * 
+ *
  * Akismet PHP4 class
- * 
+ *
  * <b>Usage</b>
  * <code>
  *    $comment = array(
@@ -38,7 +38,7 @@
  *        );
  *
  *    $akismet = new Akismet('http://www.yourdomain.com/',
- * 							'YOUR_WORDPRESS_API_KEY', $comment);
+ *                          'YOUR_WORDPRESS_API_KEY', $comment);
  *
  *    if($akismet->isError()) {
  *        echo"Couldn't connected to Akismet server!";
@@ -50,7 +50,7 @@
  *        }
  *    }
  * </code>
- * 
+ *
  * @author Bret Kuhns {@link www.miphp.net}
  * @link http://www.miphp.net/blog/view/php4_akismet_class/
  * @version 0.3.3
@@ -68,64 +68,68 @@ define('AKISMET_INVALID_KEY', 2);
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_akismet_object {
+class tx_wtspamshield_akismet_object
+{
 
-	/**
-	 * @var mixed
-	 */
-	public $errors = array();
+    /**
+     * @var mixed
+     */
+    public $errors = [];
 
-	/**
-	 * Add a new error to the errors array in the object
-	 *
-	 * @param string $name A name (array key) for the error
-	 * @param string $message The error message
-	 * @return void
-	 */
-	public function setError($name, $message) {
-		$this->errors[$name] = $message;
-	}
+    /**
+     * Add a new error to the errors array in the object
+     *
+     * @param string $name A name (array key) for the error
+     * @param string $message The error message
+     * @return void
+     */
+    public function setError($name, $message)
+    {
+        $this->errors[$name] = $message;
+    }
 
-	/**
-	 * Return a specific error message from the errors array
-	 *
-	 * @param string $name The name of the error you want
-	 * @return mixed Returns a String if the error exists,
-	 *               a false boolean if it does not exist
-	 */
-	public function getError($name) {
-		if ($this->isError($name)) {
-			return $this->errors[$name];
-		}
-		return FALSE;
-	}
+    /**
+     * Return a specific error message from the errors array
+     *
+     * @param string $name The name of the error you want
+     * @return mixed Returns a String if the error exists,
+     *               a false boolean if it does not exist
+     */
+    public function getError($name)
+    {
+        if ($this->isError($name)) {
+            return $this->errors[$name];
+        }
+        return false;
+    }
 
-	/**
-	 * Return all errors in the object
-	 *
-	 * @return mixed
-	 */
-	public function getErrors() {
-		return (array)$this->errors;
-	}
+    /**
+     * Return all errors in the object
+     *
+     * @return mixed
+     */
+    public function getErrors()
+    {
+        return (array)$this->errors;
+    }
 
-	/**
-	 * Check if a certain error exists
-	 *
-	 * @return boolean
-	 */
-	public function isError() {
-		return isset($this->errors[$name]);
-	}
+    /**
+     * Check if a certain error exists
+     *
+     * @return boolean
+     */
+    public function isError()
+    {
+        return isset($this->errors[$name]);
+    }
 
-	/**
-	 * Check if any errors exist
-	 *
-	 * @return boolean
-	 */
-	public function errorsExist() {
-		return (count($this->errors) > 0);
-	}
-}
-
+    /**
+     * Check if any errors exist
+     *
+     * @return boolean
+     */
+    public function errorsExist()
+    {
+        return (count($this->errors) > 0);
+    }
 }
