@@ -103,22 +103,22 @@ class WtspamshieldValidator extends AbstractValidator
      */
     public function isValid($value)
     {
+
         if ($this->getDiv()->isActivated($this->tsKey)) {
             $error = '';
 
-            if ($this->requestHandler->has($this->fieldName)) {
-                $value = $this->requestHandler->getByMethod($this->fieldName);
-                $validateArray = [
-                    $this->fieldName => $value
-                ];
-                $error = $this->validate($validateArray);
-            }
-
-            if (strlen($error) > 0) {
-                $this->setError('', strip_tags($error));
-
-                return false;
-            }
+//            if ($this->requestHandler->has($this->fieldName)) {
+//                $value = $this->requestHandler->getByMethod($this->fieldName);
+//                $validateArray = [
+//                    $this->fieldName => $value
+//                ];
+//                $error = $this->validate($validateArray);
+//            }
+//
+//            if (strlen($error) > 0) {
+//                $this->setError('', strip_tags($error));
+//                return false;
+//            }
         }
 
         return true;
@@ -130,26 +130,26 @@ class WtspamshieldValidator extends AbstractValidator
      * @param array $fieldValues
      * @return string
      */
-    protected function validate(array $fieldValues) {
-
-        $availableValidators =
-            array(
-                'blacklistCheck',
-                'httpCheck',
-                'honeypotCheck',
-            );
-
-        $tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '_new.']['enable']);
-
-        $processor = $this->getDiv()->getProcessor();
-        $processor->tsKey = $this->tsKey;
-        $processor->fieldValues = $fieldValues;
-        $processor->additionalValues = $this->additionalValues;
-        $processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '_new.']['how_many_validators_can_fail']);
-        $processor->methodes = array_intersect($tsValidators, $availableValidators);
-
-        $error = $processor->validate();
-        return $error;
-    }
-
+//    protected function validate(array $fieldValues)
+//    {
+//
+//        $availableValidators =
+//            [
+//                'blacklistCheck',
+//                'httpCheck',
+//                'honeypotCheck',
+//            ];
+//
+//        $tsValidators = $this->getDiv()->commaListToArray($this->tsConf['validators.'][$this->tsKey . '_new.']['enable']);
+//
+//        $processor = $this->getDiv()->getProcessor();
+//        $processor->tsKey = $this->tsKey;
+//        $processor->fieldValues = $fieldValues;
+//        $processor->additionalValues = $this->additionalValues;
+//        $processor->failureRate = intval($this->tsConf['validators.'][$this->tsKey . '_new.']['how_many_validators_can_fail']);
+//        $processor->methodes = array_intersect($tsValidators, $availableValidators);
+//
+//        $error = $processor->validate();
+//        return $error;
+//    }
 }
