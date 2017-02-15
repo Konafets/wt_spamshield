@@ -21,6 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * akismet check
@@ -69,8 +70,8 @@ class tx_wtspamshield_method_akismet extends tx_wtspamshield_method_abstract
         }
 
         $akismetArray += [
-            'user_ip' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-            'user_agent' => t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+            'user_ip' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+            'user_agent' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
         ];
 
         if ((int) $tsConf['akismetCheck.']['testMode'] == 1) {
@@ -78,7 +79,7 @@ class tx_wtspamshield_method_akismet extends tx_wtspamshield_method_abstract
         }
 
         $akismet = new tx_wtspamshield_akismet(
-            'http://' . t3lib_div::getIndpEnv('HTTP_HOST') . '/',
+            'http://' . GeneralUtility::getIndpEnv('HTTP_HOST') . '/',
             $tsConf['akismetCheck.']['akismetKey'],
             $akismetArray
         );

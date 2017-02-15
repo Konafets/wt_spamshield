@@ -21,6 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * unique check
@@ -60,11 +61,11 @@ class tx_wtspamshield_method_unique extends tx_wtspamshield_method_abstract
         $tsConf = $this->getDiv()->getTsConf();
         $error = $this->renderCobj($tsConf['errors.'], 'uniquecheck');
 
-        $myFieldArray = t3lib_div::trimExplode(';', $tsConf['uniqueCheck.']['fields'], 1);
+        $myFieldArray = GeneralUtility::trimExplode(';', $tsConf['uniqueCheck.']['fields'], 1);
         if (is_array($myFieldArray)) {
             foreach ($myFieldArray as $myKey => $myValue) {
                 $wholearray = [];
-                $fieldarray = t3lib_div::trimExplode(',', $myValue, 1);
+                $fieldarray = GeneralUtility::trimExplode(',', $myValue, 1);
 
                 if (is_array($fieldarray)) {
                     foreach ($fieldarray as $key => $value) {

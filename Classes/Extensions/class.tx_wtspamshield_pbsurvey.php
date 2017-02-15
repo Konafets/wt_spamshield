@@ -21,6 +21,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * pbsurvey hook
@@ -29,7 +31,7 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_pbsurvey extends tslib_pibase
+class tx_wtspamshield_pbsurvey extends AbstractPlugin
 {
 
     /**
@@ -73,7 +75,7 @@ class tx_wtspamshield_pbsurvey extends tslib_pibase
     protected function getDiv()
     {
         if (!isset($this->div)) {
-            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+            $this->div = GeneralUtility::makeInstance('tx_wtspamshield_div');
         }
         return $this->div;
     }
@@ -91,11 +93,11 @@ class tx_wtspamshield_pbsurvey extends tslib_pibase
 
         if ($this->getDiv()->isActivated($this->tsKey)) {
                 // Session check - generate session entry
-            $methodSessionInstance = t3lib_div::makeInstance('tx_wtspamshield_method_session');
+            $methodSessionInstance = GeneralUtility::makeInstance('tx_wtspamshield_method_session');
             $methodSessionInstance->setSessionTime();
 
                 // Honeypot check - generate honeypot Input field
-            $methodHoneypotInstance = t3lib_div::makeInstance('tx_wtspamshield_method_honeypot');
+            $methodHoneypotInstance = GeneralUtility::makeInstance('tx_wtspamshield_method_honeypot');
             $methodHoneypotInstance->additionalValues = $this->additionalValues['honeypotCheck'];
             $strOutput = $methodHoneypotInstance->createHoneypot();
         }

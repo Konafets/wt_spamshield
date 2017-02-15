@@ -23,6 +23,10 @@ namespace TYPO3\CMS\Form\Validation;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use tx_wtspamshield_div;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Form\Domain\Validator\AbstractValidator;
+
 
 /**
  * defaultmailform wtspamshield rule (TYPO3 6.x)
@@ -31,7 +35,7 @@ namespace TYPO3\CMS\Form\Validation;
  * @package tritum
  * @subpackage wt_spamshield
  */
-class WtspamshieldValidator extends \TYPO3\CMS\Form\Domain\Validator\AbstractValidator
+class WtspamshieldValidator extends AbstractValidator
 {
 
     /**
@@ -84,7 +88,7 @@ class WtspamshieldValidator extends \TYPO3\CMS\Form\Domain\Validator\AbstractVal
     protected function getDiv()
     {
         if (!isset($this->div)) {
-            $this->div = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_wtspamshield_div');
+            $this->div = GeneralUtility::makeInstance('tx_wtspamshield_div');
         }
 
         return $this->div;

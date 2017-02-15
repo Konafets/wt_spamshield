@@ -21,6 +21,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * div
@@ -29,7 +31,7 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_div extends tslib_pibase
+class tx_wtspamshield_div extends AbstractPlugin
 {
 
     /**
@@ -197,7 +199,7 @@ class tx_wtspamshield_div extends tslib_pibase
     public function getProcessor()
     {
         if (!isset($this->processor)) {
-            $this->processor = t3lib_div::makeInstance('tx_wtspamshield_processor');
+            $this->processor = GeneralUtility::makeInstance('tx_wtspamshield_processor');
         }
         return $this->processor;
     }
@@ -220,12 +222,12 @@ class tx_wtspamshield_div extends tslib_pibase
             $string = $this->extKey . ($pos != 1 && $pos != 2 ? ' Error' : '') . ': ';
         }
         $string .= $str;
-        $urlPrefix = t3lib_div::getIndpEnv('TYPO3_SITE_URL') . '/';
-        if (t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '/' != t3lib_div::getIndpEnv('TYPO3_SITE_URL')) {
+        $urlPrefix = GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . '/';
+        if (GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '/' != GeneralUtility::getIndpEnv('TYPO3_SITE_URL')) {
             $urlPrefix .= str_replace(
-                t3lib_div::getIndpEnv('TYPO3_REQUEST_HOST') . '/',
+                GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST') . '/',
                 '',
-                t3lib_div::getIndpEnv('TYPO3_SITE_URL')
+                GeneralUtility::getIndpEnv('TYPO3_SITE_URL')
             );
         }
 

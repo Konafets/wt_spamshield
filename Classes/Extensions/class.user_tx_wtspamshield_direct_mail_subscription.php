@@ -21,6 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 */
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * direct_mail_subscription hook
@@ -83,7 +84,7 @@ class user_tx_wtspamshield_direct_mail_subscription extends user_feAdmin
     protected function getDiv()
     {
         if (!isset($this->div)) {
-            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+            $this->div = GeneralUtility::makeInstance('tx_wtspamshield_div');
         }
         return $this->div;
     }
@@ -100,7 +101,7 @@ class user_tx_wtspamshield_direct_mail_subscription extends user_feAdmin
             if (isset($this->parentConf)) {
                 $this->conf['create'] = $this->parentConf;
             }
-            $methodHoneypotInstance = t3lib_div::makeInstance('tx_wtspamshield_method_honeypot');
+            $methodHoneypotInstance = GeneralUtility::makeInstance('tx_wtspamshield_method_honeypot');
             $methodHoneypotInstance->additionalValues = $this->additionalValues['honeypotCheck'];
             $this->markerArray['###HIDDENFIELDS###'] .= $methodHoneypotInstance->createHoneypot();
             if ($this->spamshieldDisplayError) {

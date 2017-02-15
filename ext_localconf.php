@@ -3,14 +3,6 @@ if (!defined('TYPO3_MODE')) {
     die('Access denied.');
 }
 
-if (class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility\VersionNumberUtility')) {
-    $t3Version = \TYPO3\CMS\Core\Utility\GeneralUtility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
-} elseif (class_exists('t3lib_utility_VersionNumber')) {
-    $t3Version = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version);
-} elseif (class_exists('t3lib_div')) {
-    $t3Version = t3lib_div::int_from_ver(TYPO3_version);
-}
-
 /* Use HOOKS in other extensions */
 
     // Hook Powermail: Generate Form
@@ -22,17 +14,9 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['powermail']['PM_SubmitBeforeMarkerHook']
     = 'EXT:wt_spamshield/Classes/Extensions/class.tx_wtspamshield_powermail.php:tx_wtspamshield_powermail';
 
     // Hook Powermail2:
-if (
-    $t3Version >= 6002000 &&
-    t3lib_extMgm::isLoaded('powermail')
-) {
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('powermail')) {
     $signalSlotDispatcher = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\SignalSlot\\Dispatcher');
     $signalSlotDispatcher->connect('In2code\\Powermail\\Domain\\Validator\\CustomValidator', 'isValid', 'TRITUM\\WtSpamshield\\Extensions\\Powermail2Validator', 'validate');
-} elseif ($t3Version >= 4007000 &&
-    t3lib_extMgm::isLoaded('powermail')
-) {
-    $signalSlotDispatcher = t3lib_div::makeInstance('Tx_Extbase_SignalSlot_Dispatcher');
-    $signalSlotDispatcher->connect('Tx_Powermail_Domain_Validator_CustomValidator', 'isValid', 'tx_wtspamshield_powermail2', 'validate');
 }
 
     // Hook ve_guestbook: Generate Form
@@ -43,33 +27,17 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ve_guestbook']['extraItemMarkerHook'][]
 $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['ve_guestbook']['preEntryInsertHook'][]
     = 'EXT:wt_spamshield/Classes/Extensions/class.tx_wtspamshield_ve_guestbook.php:tx_wtspamshield_ve_guestbook';
 
-$extPath = t3lib_extMgm::extPath('wt_spamshield');
+$extPath = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('wt_spamshield');
 
     // Validator/ Hook standard mailform: Disable email
-if ($t3Version >= 6002000 &&
-    t3lib_extMgm::isLoaded('form')
-) {
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('form')) {
     $txFormValidator = $extPath . 'Classes/Extensions/WtspamshieldValidator.php';
     require_once($txFormValidator);
-} elseif ($t3Version >= 6000000 &&
-    t3lib_extMgm::isLoaded('form')
-) {
-    $txFormValidator = $extPath . 'Classes/Extensions/WtspamshieldValidator.php';
-    require_once($txFormValidator);
-} elseif ($t3Version >= 4006000 &&
-    t3lib_extMgm::isLoaded('form')
-) {
-    $txFormValidator = $extPath . 'Classes/Extensions/class.tx_form_System_Validate_Wtspamshield.php';
-    require_once($txFormValidator);
-} else {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['tslib/class.tslib_fe.php']['sendFormmail-PreProcClass'][]
-        = 'EXT:wt_spamshield/Classes/Extensions/class.tx_wtspamshield_defaultmailform.php:tx_wtspamshield_defaultmailform';
 }
-
     // Hook direct_mail_subscription
     // Sorry, there is no better way, the autoloader does not work
-if (t3lib_extMgm::isLoaded('direct_mail_subscription')) {
-    $directMailSubscription = t3lib_extMgm::extPath('direct_mail_subscription') . 'fe_adminLib.inc';
+if (\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::isLoaded('direct_mail_subscription')) {
+    $directMailSubscription = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('direct_mail_subscription') . 'fe_adminLib.inc';
     require_once($directMailSubscription);
 }
 
@@ -102,14 +70,7 @@ $GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['pbsurvey']['externalFormValidation'][]
     = 'EXT:wt_spamshield/Classes/Extensions/class.tx_wtspamshield_pbsurvey.php:tx_wtspamshield_pbsurvey';
 
     // Register tx_wtspamshield_log table in table garbage collection task
-if ($t3Version >= 6000000) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask']['options']['tables']['tx_wtspamshield_log'] = [
-        'dateField' => 'tstamp',
-        'expirePeriod' => 180,
-    ];
-} elseif ($t3Version >= 4007000) {
-    $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['tx_scheduler_TableGarbageCollection']['options']['tables']['tx_wtspamshield_log'] = [
-        'dateField' => 'tstamp',
-        'expirePeriod' => 180,
-    ];
-}
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['TYPO3\CMS\Scheduler\Task\TableGarbageCollectionTask']['options']['tables']['tx_wtspamshield_log'] = [
+    'dateField' => 'tstamp',
+    'expirePeriod' => 180,
+];

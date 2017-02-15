@@ -21,6 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * abstract
@@ -66,19 +67,7 @@ class tx_wtspamshield_method_abstract extends \TYPO3\CMS\Frontend\Plugin\Abstrac
 
         $this->ll = $this->includeLocalLang();
 
-        if (class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility\VersionNumberUtility')) {
-            $t3Version = \TYPO3\CMS\Core\Utility\GeneralUtility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
-        } else if (class_exists('t3lib_utility_VersionNumber')) {
-            $t3Version = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version);
-        } else if (class_exists('t3lib_div')) {
-            $t3Version = t3lib_div::int_from_ver(TYPO3_version);
-        }
-
-        if ($t3Version >= 6000000) {
-            $this->cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tslib_cObj');
-        } else {
-            $this->cObj = t3lib_div::makeInstance('tslib_cObj');
-        }
+        $this->cObj = GeneralUtility::makeInstance('TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer');
     }
 
     /**
@@ -98,27 +87,12 @@ class tx_wtspamshield_method_abstract extends \TYPO3\CMS\Frontend\Plugin\Abstrac
      *
      * @return mixed $localLang
      */
-    public function includeLocalLang() {
-        if (class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility\VersionNumberUtility')) {
-            $t3Version = \TYPO3\CMS\Core\Utility\GeneralUtility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
-        } else if (class_exists('t3lib_utility_VersionNumber')) {
-            $t3Version = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version);
-        } else if (class_exists('t3lib_div')) {
-            $t3Version = t3lib_div::int_from_ver(TYPO3_version);
-        }
+    public function includeLocalLang()
+    {
+        $llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('wt_spamshield') .
+            'Resources/Private/Language/locallang.xml';
+        $localLang = GeneralUtility::readLLfile($llFile, $this->l->lang);
 
-        if ($t3Version >= 6000000) {
-            $llFile = \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('wt_spamshield') .
-                'Resources/Private/Language/locallang.xml';
-            $localLang = \TYPO3\CMS\Core\Utility\GeneralUtility::readLLfile($llFile, $this->l->lang);
-        } elseif ($t3Version >= 4006000) {
-            $llFile = t3lib_extMgm::extPath('wt_spamshield') . 'Resources/Private/Language/locallang.xml';
-            $xmlParser = t3lib_div::makeInstance('t3lib_l10n_parser_Llxml');
-            $localLang = $xmlParser->getParsedData($llFile, $this->l->lang);
-        } else {
-            $llFile = t3lib_extMgm::extPath('wt_spamshield') . 'Resources/Private/Language/locallang.xml';
-            $localLang = t3lib_div::readLLXMLfile($llFile, $this->l->lang);
-        }
         return $localLang;
     }
 
@@ -147,7 +121,7 @@ class tx_wtspamshield_method_abstract extends \TYPO3\CMS\Frontend\Plugin\Abstrac
     public function getDiv()
     {
         if (!isset($this->div)) {
-            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+            $this->div = GeneralUtility::makeInstance('tx_wtspamshield_div');
         }
         return $this->div;
     }

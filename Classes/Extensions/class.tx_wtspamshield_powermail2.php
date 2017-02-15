@@ -21,6 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * powermail 2.x hook
@@ -70,7 +71,7 @@ class tx_wtspamshield_powermail2 extends Tx_Powermail_Domain_Validator_CustomVal
     protected function getDiv()
     {
         if (!isset($this->div)) {
-            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+            $this->div = GeneralUtility::makeInstance('tx_wtspamshield_div');
         }
         return $this->div;
     }

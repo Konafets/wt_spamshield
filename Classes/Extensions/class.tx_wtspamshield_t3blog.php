@@ -22,6 +22,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * t3blog hook
@@ -31,7 +33,7 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_t3blog extends tslib_pibase
+class tx_wtspamshield_t3blog extends AbstractPlugin
 {
 
     /**
@@ -72,7 +74,7 @@ class tx_wtspamshield_t3blog extends tslib_pibase
     protected function getDiv()
     {
         if (!isset($this->div)) {
-            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+            $this->div = GeneralUtility::makeInstance('tx_wtspamshield_div');
         }
         return $this->div;
     }

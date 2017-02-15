@@ -21,6 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * processor
@@ -74,10 +75,10 @@ class tx_wtspamshield_processor
      */
     public function log()
     {
-        $methodLogInstance = t3lib_div::makeInstance('tx_wtspamshield_log');
+        $methodLogInstance = GeneralUtility::makeInstance('tx_wtspamshield_log');
         $methodLogInstance->dbLog($this->tsKey, $this->currentFailures, $this->errorMessages, $this->fieldValues);
 
-        $methodSendEmailInstance = t3lib_div::makeInstance('tx_wtspamshield_mail');
+        $methodSendEmailInstance = GeneralUtility::makeInstance('tx_wtspamshield_mail');
         $methodSendEmailInstance->sendEmail($this->tsKey, $this->currentFailures, $this->errorMessages, $this->fieldValues);
     }
 
@@ -102,7 +103,7 @@ class tx_wtspamshield_processor
 
         foreach ($methodMap as $method => $class) {
             if (in_array($method, $this->methodes)) {
-                $methodInstance =  t3lib_div::makeInstance($class);
+                $methodInstance =  GeneralUtility::makeInstance($class);
                 $methodInstance->fieldValues = $this->fieldValues;
                 $methodInstance->additionalValues = $this->additionalValues[$method];
                 $methodInstance->tsKey = $this->tsKey;

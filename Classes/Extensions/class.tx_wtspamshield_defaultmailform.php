@@ -21,6 +21,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * defaultmailform hook (TYPO3 <= 4.5)
@@ -29,7 +31,7 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_defaultmailform extends tslib_pibase
+class tx_wtspamshield_defaultmailform extends AbstractPlugin
 {
 
     /**
@@ -77,7 +79,7 @@ class tx_wtspamshield_defaultmailform extends tslib_pibase
     protected function getDiv()
     {
         if (!isset($this->div)) {
-            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+            $this->div = GeneralUtility::makeInstance('tx_wtspamshield_div');
         }
         return $this->div;
     }
@@ -96,7 +98,7 @@ class tx_wtspamshield_defaultmailform extends tslib_pibase
             $forceValue = !(isset($configuration['ifOutdated']) && $configuration['ifOutdated']);
 
                 // Set session on form create
-            $methodSessionInstance = t3lib_div::makeInstance('tx_wtspamshield_method_session');
+            $methodSessionInstance = GeneralUtility::makeInstance('tx_wtspamshield_method_session');
             $methodSessionInstance->setSessionTime($forceValue);
             $methodSessionInstance->saveCurrentTSInSession('standardMailform');
         }
@@ -127,7 +129,7 @@ class tx_wtspamshield_defaultmailform extends tslib_pibase
                 }
                 $link = (strlen($this->tsConf['redirect.'][$this->tsKey]) > 0
                     ? $this->tsConf['redirect.'][$this->tsKey]
-                    : t3lib_div::getIndpEnv('TYPO3_SITE_URL'));
+                    : GeneralUtility::getIndpEnv('TYPO3_SITE_URL'));
                 header('HTTP/1.1 301 Moved Permanently');
                 header('Location: ' . $link);
                 header('Connection: close');

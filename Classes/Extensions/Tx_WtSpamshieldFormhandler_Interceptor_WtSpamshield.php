@@ -11,13 +11,14 @@
  * TABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General      *
  * Public License for more details.                                       *
  *                                                                        */
+use Typoheads\Formhandler\Interceptor\AntiSpamFormTime;
 
 /**
  * Spam protection for the form withouth Captcha using wt_spamshield extension.
  *
  * @author  Charles Brunet <charles@cbrunet.net>
  */
-class Tx_WtSpamshieldFormhandler_Interceptor_WtSpamshield extends Tx_Formhandler_Interceptor_AntiSpamFormTime
+class Tx_WtSpamshieldFormhandler_Interceptor_WtSpamshield extends AntiSpamFormTime
 {
 
 

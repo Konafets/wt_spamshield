@@ -29,7 +29,7 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_mail extends tslib_pibase
+class tx_wtspamshield_mail extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin
 {
 
     /**
@@ -54,13 +54,13 @@ class tx_wtspamshield_mail extends tslib_pibase
      */
     public function sendEmail($ext, $points, $errorMessages, $formArray, $sendPlain = 1)
     {
-        $div = t3lib_div::makeInstance('tx_wtspamshield_div');
+        $div = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_wtspamshield_div');
         $tsConf = $div->getTsConf();
 
         $errorMessages['points'] = 'Score: ' . $points;
         $errorMessages = strip_tags(implode(' / ', $errorMessages));
 
-        if (t3lib_div::validEmail($tsConf['logging.']['notificationAddress'])) {
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::validEmail($tsConf['logging.']['notificationAddress'])) {
             if (!$sendPlain) {
                     // Prepare mail
                 $mailtext = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
@@ -79,7 +79,7 @@ class tx_wtspamshield_mail extends tslib_pibase
 								</tr>
 								<tr>
 									<td><strong>URL:</strong></td>
-									<td>' . t3lib_div::getIndpEnv('HTTP_HOST') . '</td>
+									<td>' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST') . '</td>
 								</tr>
 								<tr>
 									<td><strong>Error:</strong></td>
@@ -87,11 +87,11 @@ class tx_wtspamshield_mail extends tslib_pibase
 								</tr>
 								<tr>
 									<td><strong>IP:</strong></td>
-									<td>' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '</td>
+									<td>' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR') . '</td>
 								</tr>
 								<tr>
 									<td><strong>Useragent:</strong></td>
-									<td>' . t3lib_div::getIndpEnv('HTTP_USER_AGENT') . '</td>
+									<td>' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT') . '</td>
 								</tr>
 								<tr>
 									<td valign=top><strong>Form values:</strong></td>
@@ -103,10 +103,10 @@ class tx_wtspamshield_mail extends tslib_pibase
 				';
 
                     // Send mail
-                $this->htmlMail = t3lib_div::makeInstance('t3lib_htmlmail');
+                $this->htmlMail = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('t3lib_htmlmail');
                 $this->htmlMail->start();
                 $this->htmlMail->recipient = $tsConf['logging.']['notificationAddress'];
-                $this->htmlMail->subject = 'Spam recognized in ' . $ext . ' on ' . t3lib_div::getIndpEnv('HTTP_HOST');
+                $this->htmlMail->subject = 'Spam recognized in ' . $ext . ' on ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
                 $this->htmlMail->from_email = $tsConf['logging.']['notificationAddress'];
                 $this->htmlMail->from_name = 'Spamshield';
                 $this->htmlMail->returnPath = $tsConf['logging.']['notificationAddress'];
@@ -118,10 +118,10 @@ class tx_wtspamshield_mail extends tslib_pibase
                 $info = [
                     'Extension' => $ext,
                     'PID' => $GLOBALS['TSFE']->id,
-                    'URL' => t3lib_div::getIndpEnv('HTTP_HOST'),
+                    'URL' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST'),
                     'Error' => $errorMessages,
-                    'IP' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-                    'Useragent' => t3lib_div::getIndpEnv('HTTP_USER_AGENT'),
+                    'IP' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+                    'Useragent' => \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_USER_AGENT'),
                 ];
                 foreach ($info as $key => $value) {
                     $mailtext .= $key . ': ' . $value . chr(10);
@@ -133,7 +133,7 @@ class tx_wtspamshield_mail extends tslib_pibase
 
                 $to = $tsConf['logging.']['notificationAddress'];
                 $from = '"Spamshield" <' . $tsConf['logging.']['notificationAddress'] . '>';
-                $subject = 'Spam recognized in ' . $ext . ' on ' . t3lib_div::getIndpEnv('HTTP_HOST');
+                $subject = 'Spam recognized in ' . $ext . ' on ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('HTTP_HOST');
                 $headers = 'From: ' . $from;
                 mail($to, $subject, $mailtext, $headers);
             }

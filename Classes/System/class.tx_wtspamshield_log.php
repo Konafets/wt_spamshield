@@ -21,6 +21,9 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\DebugUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * log
@@ -29,7 +32,7 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_log extends tslib_pibase
+class tx_wtspamshield_log extends AbstractPlugin
 {
 
     /**
@@ -53,7 +56,7 @@ class tx_wtspamshield_log extends tslib_pibase
      */
     public function dbLog($ext, $points, $errorMessages, $formArray)
     {
-        $div = t3lib_div::makeInstance('tx_wtspamshield_div');
+        $div = GeneralUtility::makeInstance('tx_wtspamshield_div');
         $tsConf = $div->getTsConf();
 
         if ($this->dbInsert) {
@@ -71,15 +74,6 @@ class tx_wtspamshield_log extends tslib_pibase
 
             $errorMessage = 'Score: ' . $points;
 
-            // Downwards compatibility
-            if (class_exists('\TYPO3\CMS\Core\Utility\GeneralUtility\VersionNumberUtility')) {
-                $t3Version = \TYPO3\CMS\Core\Utility\GeneralUtility\VersionNumberUtility::convertVersionNumberToInteger(TYPO3_version);
-            } else if (class_exists('t3lib_utility_VersionNumber')) {
-                $t3Version = t3lib_utility_VersionNumber::convertVersionNumberToInteger(TYPO3_version);
-            } else if (class_exists('t3lib_div')) {
-                $t3Version = t3lib_div::int_from_ver(TYPO3_version);
-            }
-
             $dbValues =  [
                 'pid' => intval($tsConf['logging.']['pid']),
                 'tstamp' => time(),
@@ -88,19 +82,13 @@ class tx_wtspamshield_log extends tslib_pibase
                 'form' => $ext,
                 'errormsg' => $errorMessage,
                 'pageid' => $GLOBALS['TSFE']->id,
-                'ip' => t3lib_div::getIndpEnv('REMOTE_ADDR'),
-                'useragent' => t3lib_div::getIndpEnv('HTTP_USER_AGENT')
+                'ip' => GeneralUtility::getIndpEnv('REMOTE_ADDR'),
+                'useragent' => GeneralUtility::getIndpEnv('HTTP_USER_AGENT')
             ];
 
-            if ($t3Version < 4007000) {
-                $dbValues += [
-                    'formvalues' => t3lib_div::view_array($formArray) . t3lib_div::view_array($errorMessages)
-                ];
-            } else {
-                $dbValues += [
-                    'formvalues' => t3lib_utility_Debug::viewArray($formArray) . t3lib_utility_Debug::viewArray($errorMessages)
-                ];
-            }
+            $dbValues += [
+                'formvalues' => DebugUtility::viewArray($formArray) . DebugUtility::viewArray($errorMessages)
+            ];
 
             $GLOBALS['TYPO3_DB']->exec_INSERTquery('tx_wtspamshield_log', $dbValues);
         }

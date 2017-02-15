@@ -21,6 +21,8 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
 
 /**
  * powermail hook
@@ -29,7 +31,7 @@
  * @package tritum
  * @subpackage wt_spamshield
  */
-class tx_wtspamshield_powermail extends tslib_pibase
+class tx_wtspamshield_powermail extends AbstractPlugin
 {
 
     /**
@@ -73,7 +75,7 @@ class tx_wtspamshield_powermail extends tslib_pibase
     protected function getDiv()
     {
         if (!isset($this->div)) {
-            $this->div = t3lib_div::makeInstance('tx_wtspamshield_div');
+            $this->div = GeneralUtility::makeInstance('tx_wtspamshield_div');
         }
         return $this->div;
     }
@@ -92,11 +94,11 @@ class tx_wtspamshield_powermail extends tslib_pibase
 
         if ($this->getDiv()->isActivated($this->tsKey)) {
                 // Set session on form create
-            $methodSessionInstance = t3lib_div::makeInstance('tx_wtspamshield_method_session');
+            $methodSessionInstance = GeneralUtility::makeInstance('tx_wtspamshield_method_session');
             $methodSessionInstance->setSessionTime();
 
                 // Add Honeypot
-            $methodHoneypotInstance = t3lib_div::makeInstance('tx_wtspamshield_method_honeypot');
+            $methodHoneypotInstance = GeneralUtility::makeInstance('tx_wtspamshield_method_honeypot');
             $methodHoneypotInstance->additionalValues = $this->additionalValues['honeypotCheck'];
             $subpartArray['###POWERMAIL_CONTENT###'] .= $methodHoneypotInstance->createHoneypot();
         }
@@ -125,7 +127,7 @@ class tx_wtspamshield_powermail extends tslib_pibase
                 if (is_array($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['wt_spamshield']['customMessageOnError'][$this->tsKey])) {
                     $customError = '';
                     foreach ($GLOBALS['TYPO3_CONF_VARS']['EXTCONF']['wt_spamshield']['customMessageOnError'][$this->tsKey] as $_classRef) {
-                        $_procObj = &t3lib_div::getUserObj($_classRef);
+                        $_procObj = &GeneralUtility::getUserObj($_classRef);
                         $customError .= $_procObj->customMessageOnError($error, $this);
                     }
                     return $customError;

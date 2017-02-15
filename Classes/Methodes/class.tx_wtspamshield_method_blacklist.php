@@ -21,6 +21,7 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 /**
  * blacklist check
@@ -70,7 +71,7 @@ class tx_wtspamshield_method_blacklist extends tx_wtspamshield_method_abstract
     {
         $select = 'tx_wtspamshield_blacklist.uid';
         $from = 'tx_wtspamshield_blacklist';
-        $where = 'tx_wtspamshield_blacklist.value = "' . t3lib_div::getIndpEnv('REMOTE_ADDR') . '"';
+        $where = 'tx_wtspamshield_blacklist.value = "' . GeneralUtility::getIndpEnv('REMOTE_ADDR') . '"';
         $where .= ' AND tx_wtspamshield_blacklist.type = "ip"';
         $where .= ' AND tx_wtspamshield_blacklist.whitelist = 0';
         $where .= ' AND tx_wtspamshield_blacklist.deleted = 0';
