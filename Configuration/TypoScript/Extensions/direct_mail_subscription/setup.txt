@@ -1,0 +1,4 @@
+plugin.feadmin.dmailsubscription {
+  includeLibs = EXT:wt_spamshield/Classes/Extensions/class.user_tx_wtspamshield_direct_mail_subscription.php
+  userFunc = user_tx_wtspamshield_direct_mail_subscription->init
+}

@@ -1,0 +1,6 @@
+﻿.. |img-5|      image:: ../../Images/spam_log_detail.png
+   :height: 500
+   :width: 599
+.. :align: left
+.. :border: 0
+.. :name: Example Spam log detail

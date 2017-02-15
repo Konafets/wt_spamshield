@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<T3locallang>
+	<meta type="array">
+		<type>module</type>
+		<description>Language labels for plugin &quot;wt_spamshield&quot;</description>
+	</meta>
+	<data type="array">
+		<languageKey index="default" type="array">
+			<label index="honeypot.explanation">Please, do not fill this field!</label>
+			<label index="honeypot.error">Entry in honeypot recognized!</label>
+			<label index="blacklist.error">Sorry, you are blacklisted.</label>
+			<label index="akismet.error">Akismet detected your entry as spam.</label>
+			<label index="httpCheck.error">It is not allowed to use more than %s links within this form.</label>
+			<label index="nameCheck.error">It is not allowed to use the same first name and last name</label>
+			<label index="session.error.1">Sorry, but you have waited too long to submit the form.</label>
+			<label index="session.error.2">Please wait some seconds before sending the form.</label>
+			<label index="session.error.3">No timestamp set in session.</label>
+			<label index="uniquecheck.error">It is not allowed to use the same values in different fields.</label>
+		</languageKey>
+		<languageKey index="de" type="array">
+			<label index="honeypot.explanation">Bitte dieses Feld nicht ausfüllen!</label>
+			<label index="honeypot.error">Eintrag im Honeypot Feld gefunden.</label>
+			<label index="blacklist.error">Sie stehen auf der Blacklist.</label>
+			<label index="akismet.error">Akismet hat den Eintrag als Spam klassifiziert.</label>
+			<label index="httpCheck.error">Es dürfen nicht mehr als %s Links in diesem Formular angegeben werden.</label>
+			<label index="nameCheck.error">Der Vor- und Nachname dürfen nicht gleich sein.</label>
+			<label index="session.error.1">Sie haben zu lange gewartet, um das Formular zu versenden.</label>
+			<label index="session.error.2">Bitte warten Sie einen Moment, bevor Sie das Formular versenden.</label>
+			<label index="session.error.3">Keine Timestamp in der Session vorhanden.</label>
+			<label index="uniquecheck.error">Zu viele Felder weisen den gleichen Inhalt auf.</label>
+		</languageKey>
+	</data>
+</T3locallang>

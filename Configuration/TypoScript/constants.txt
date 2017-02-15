@@ -1,0 +1,167 @@
+###
+# This are the default TS-constants for wt_spamshield
+##
+
+plugin.wt_spamshield {
+  # cat=wt_spamshield main//0010; type=text; label= Logging: Enter an email address if you would like to receive an email if spam was recognized (e.g. email@domain.org).
+  logging.notificationAddress =
+
+  # cat=wt_spamshield main//0020; type=int; label= Logging: Enter a PID for saving spam log entries (-2 for current page, -1 deactivates logging, 0 for root page, 1 for PID 1 etc.).
+  logging.pid = 0
+
+  # cat=wt_spamshield main//0030; type=boolean; label= Protect comments: Enable spamshield for comments
+  comments = 0
+
+  # cat=wt_spamshield main//0040; type=boolean; label= Protect mailform: Enable spamshield for default mailform
+  mailform = 0
+
+  # cat=wt_spamshield main//0050; type=boolean; label= Protect direct_mail_subscription: Enable spamshield for direct_mail_subscription
+  direct_mail_subscription = 0
+
+  # cat=wt_spamshield main//0060; type=boolean; label= Protect ke_userregister: Enable spamshield for ke_userregister
+  ke_userregister = 0
+
+  # cat=wt_spamshield main//0070; type=boolean; label= Protect powermail: Enable spamshield for powermail (version 1.x)
+  powermail = 0
+
+  # cat=wt_spamshield main//0080; type=boolean; label= Protect powermail: Enable spamshield for powermail (version 2.x)
+  powermail2 = 0
+
+  # cat=wt_spamshield main//0090; type=boolean; label= Protect t3_blog: Enable spamshield for t3_blog
+  t3_blog = 0
+
+  # cat=wt_spamshield main//0100; type=boolean; label= Protect ve_guestbook: Enable spamshield for ve_guestbook
+  ve_guestbook = 0
+
+  # cat=wt_spamshield main//0110; type=boolean; label= Protect pbsurvey: Enable spamshield for pbsurvey
+  pbsurvey = 0
+
+  # cat=wt_spamshield main//0115; type=boolean; label= Protect formhandler: Enable spamshield for formhandler
+  formhandler = 0
+
+  # cat=wt_spamshield main//0120; type=text; label= validators for standardMailform >= TYPO3 4.6: available validators are blacklistCheck, httpCheck, honeypotCheck, akismetCheck (only with wtspamshieldvalidator postProcessor)
+  validators.standardMailform_new.enable = blacklistCheck, httpCheck, honeypotCheck, akismetCheck
+
+  # cat=wt_spamshield main//0130; type=int; label= failure rate for standardMailform >= TYPO3 4.6: how many validators can fail
+  validators.standardMailform_new.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0140; type=text; label= validators for standardMailform <= TYPO3 4.5: available validators are blacklistCheck, httpCheck, uniqueCheck, sessionCheck, honeypotCheck
+  validators.standardMailform_old.enable = blacklistCheck, httpCheck, uniqueCheck, sessionCheck, honeypotCheck
+
+  # cat=wt_spamshield main//0150; type=int; label= failure rate for standardMailform <= TYPO3 4.5: how many validators can fail
+  validators.standardMailform_old.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0160; type=text; label= validators for powermail: available validators are blacklistCheck, sessionCheck, httpCheck, uniqueCheck, honeypotCheck, akismetCheck
+  validators.powermail.enable = blacklistCheck, sessionCheck, httpCheck, uniqueCheck, honeypotCheck, akismetCheck
+
+  # cat=wt_spamshield main//0170; type=int; label= failure rate for powermail: how many validators can fail
+  validators.powermail.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0180; type=text; label= validators for powermail2: available validators are akismetCheck, blacklistCheck
+  validators.powermail2.enable = akismetCheck, blacklistCheck
+
+  # cat=wt_spamshield main//0190; type=int; label= failure rate for powermail2: how many validators can fail
+  validators.powermail2.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0200; type=text; label= validators for ve_guestbook: available validators are blacklistCheck, nameCheck, sessionCheck, httpCheck, honeypotCheck, akismetCheck
+  validators.ve_guestbook.enable = blacklistCheck, nameCheck, sessionCheck, httpCheck, honeypotCheck, akismetCheck
+
+  # cat=wt_spamshield main//0210; type=int; label= failure rate for ve_guestbook: how many validators can fail
+  validators.ve_guestbook.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0220; type=text; label= validators for comments: available validators are blacklistCheck, nameCheck, httpCheck, sessionCheck, honeypotCheck, akismetCheck
+  validators.comments.enable = blacklistCheck, nameCheck, httpCheck, sessionCheck, honeypotCheck, akismetCheck
+
+  # cat=wt_spamshield main//0230; type=int; label= failure rate for comments: how many validators can fail
+  validators.comments.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0240; type=text; label= validators for t3_blog: available validators are httpCheck, akismetCheck
+  validators.t3_blog.enable = httpCheck, akismetCheck
+
+  # cat=wt_spamshield main//0250; type=int; label= failure rate for t3_blog: how many validators can fail
+  validators.t3_blog.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0260; type=text; label= validators for direct_mail_subscription: available validators are blacklistCheck, httpCheck, uniqueCheck, honeypotCheck
+  validators.direct_mail_subscription.enable = blacklistCheck, httpCheck, uniqueCheck, honeypotCheck
+
+  # cat=wt_spamshield main//0270; type=int; label= failure rate for direct_mail_subscription: how many validators can fail
+  validators.direct_mail_subscription.how_many_validators_can_fail = 0
+  
+  # cat=wt_spamshield main//0280; type=text; label= validators for ke_userregister: available validators are blacklistCheck, nameCheck, httpCheck, sessionCheck, honeypotCheck, akismetCheck
+  validators.ke_userregister.enable = blacklistCheck, nameCheck, httpCheck, sessionCheck, honeypotCheck, akismetCheck
+
+  # cat=wt_spamshield main//0290; type=int; label= failure rate for ke_userregister: how many validators can fail
+  validators.ke_userregister.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0300; type=text; label= validators for pbsurvey: available validators are httpCheck, sessionCheck, honeypotCheck, blacklistCheck
+  validators.pbsurvey.enable = httpCheck, sessionCheck, honeypotCheck, blacklistCheck
+
+  # cat=wt_spamshield main//0310; type=int; label= failure rate for pbsurvey: how many validators can fail
+  validators.pbsurvey.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0315; type=text; label= validators for formhandler: available validators are blacklistCheck, httpCheck, uniqueCheck, honeypotCheck, akismetCheck
+  validators.formhandler.enable = blacklistCheck, httpCheck, uniqueCheck, honeypotCheck, akismetCheck
+
+  # cat=wt_spamshield main//0316; type=int; label= failure rate for formhandler: how many validators can fail
+  validators.formhandler.how_many_validators_can_fail = 0
+
+  # cat=wt_spamshield main//0320; type=text; label= Mailform Redirect: Redirect URL for default mailform
+  redirect_mailform =
+
+  # cat=wt_spamshield main//0330; type=int; label= ve_guestbook Redirect: Redirect PID for ve_guestbook
+  redirect_ve_guestbook =
+
+  # cat=wt_spamshield main//0340; type=int; label= httpCheck: Set the maximum number of links (http, https, ftp) within a field. If you want to allow 3 links enter "3". If you want no links at all enter "0".
+  httpCheck.maximumLinkAmount = 3
+
+  # cat=wt_spamshield main//0350; type=text; label= uniqueCheck: Enter different field names (separated by comma) which should not be equal. Example for powermail: uid1 = first name and uid2 = last name -> "uid1,uid2". You can add more than one condition by splitting them with semicolons. Example for powermail: uid1 = first name, uid2 = last name, uid3 = address, uid1 and uid3 should not be equal as well as uid2 and uid3 should not be equal but uid1 and uid2 can be equal -> "uid1,uid3[semicolon]uid2,uid3".
+  uniqueCheck.fields =
+
+  # cat=wt_spamshield main//0360; type=text; label= akismetCheck: Enter your Akismet key to activate Akismet check (signup at https://akismet.com/signup/).
+  akismetCheck.akismetKey =
+
+  # cat=wt_spamshield main//0365; type=text; label= akismetCheck Test Mode: Enable the akismet test mode (is_test=1)
+  akismetCheck.testMode = 0
+
+  # cat=wt_spamshield main//0370; type=int; label= Session start time (s): Minimum time frame between entering the form page and submiting the form. 0 for disable.
+  sessionCheck.sessionStartTime = 10
+
+  # cat=wt_spamshield main//0380; type=int; label= Session end time (s): Maximum time frame between entering the form page and submiting the form. 0 for disable.
+  sessionCheck.sessionEndTime = 600
+
+  # cat=wt_spamshield main//0390; type=text; label= CSS styles honeypot: CSS style for honeypot input field
+  honeypot.css.inputStyle = style="position:absolute; margin:0 0 0 -999em;"
+
+  # cat=wt_spamshield main//0400; type=text; label= CSS class honeypot: CSS class for honeypot input field
+  honeypot.css.inputClass = class="wt_spamshield_field wt_spamshield_honey"
+
+  # cat=wt_spamshield main//0410; type=text; label= additional tags params for honeypot: additional tag params for honeypot
+  honeypot.additionalParams.standard = autocomplete="off"
+
+  # cat=wt_spamshield main//0420; type=text; label= additional html5 tags params for honeypot: additional html5 tags params for honeypot
+  honeypot.additionalParams.html5 = tabindex="-1"
+
+  # cat=wt_spamshield main//0430; type=text; label= Honeypot input name for comments
+  honeypot.inputname.comments = uid987651
+
+  # cat=wt_spamshield main//0440; type=text; label= Honeypot input name for direct_mail_subscription
+  honeypot.inputname.direct_mail_subscription = uid987651
+
+  # cat=wt_spamshield main//0450; type=text; label= Honeypot input name for standardMailform
+  honeypot.inputname.standardMailform = uid987651
+
+  # cat=wt_spamshield main//0460; type=text; label= Honeypot input name for powermail
+  honeypot.inputname.powermail = uid987651
+
+  # cat=wt_spamshield main//0470; type=text; label= Honeypot input name for ve_guestbook
+  honeypot.inputname.ve_guestbook = uid987651
+
+  # cat=wt_spamshield main//0480; type=text; label= Honeypot input name for ke_userregister
+  honeypot.inputname.ke_userregister = uid987651
+
+  # cat=wt_spamshield main//0490; type=text; label= Honeypot input name for pbsurvey
+  honeypot.inputname.pbsurvey = uid987651
+
+  # cat=wt_spamshield main//0500; type=text; label= Honeyput input name for formhandler
+  honeypot.inputname.formhandler = uid987651
+}

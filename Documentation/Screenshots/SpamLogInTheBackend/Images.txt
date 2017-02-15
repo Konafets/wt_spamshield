@@ -1,0 +1,6 @@
+﻿.. |img-4|      image:: ../../Images/spam_log_backend.png
+   :height: 400
+   :width: 547
+.. :align: left
+.. :border: 0
+.. :name: Spam log in the backend

@@ -1,0 +1,6 @@
+﻿.. |img-10|     image:: ../../Images/manual_html_m1c35f4e1.jpg
+   :height: 49
+   :width: 159
+.. :align: left
+.. :border: 0
+.. :name: Grafik5

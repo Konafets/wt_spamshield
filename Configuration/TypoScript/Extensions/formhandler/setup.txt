@@ -1,0 +1,20 @@
+plugin.Tx_Formhandler.settings.markers.HONEYPOT = TEXT
+plugin.Tx_Formhandler.settings.markers.HONEYPOT {
+  value < plugin.wt_spamshield.honeypot.inputname.formhandler
+  value.wrap = [|]
+  value.prepend = TEXT
+  value.prepend.value < plugin.Tx_Formhandler.settings.formValuesPrefix
+
+  stdWrap {
+    outerWrap = <input type="text" autocomplete="off" | value="" />
+    noTrimWrap = | name="|" |
+    append = COA
+    append {
+      stdWrap.noTrimWrap = | | |
+      10 = TEXT
+      10.value < plugin.wt_spamshield.honeypot.css.inputStyle
+      20 = TEXT
+      20.value < plugin.wt_spamshield.honeypot.css.inputClass
+    }
+  }
+}

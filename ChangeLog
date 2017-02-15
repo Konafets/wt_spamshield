@@ -1,0 +1,176 @@
+1.3.1
+
+	2015-02-27
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [BUGFIX] #65367 - tx_form - add static localization constant
+
+1.3.0
+
+	* Roadmap: https://forge.typo3.org/versions/2712
+
+	2015-02-03
+	Bjoern Jacob <bjoern.jacob@tritum.de>
+
+	* [TASK] #62407: Move documentation to ReST
+	* [TASK] #61961: Add privacy note about Akismet usage in Germany
+	* [BUGFIX] #59026: The documentation for pbsurvey is incomplete
+
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [TASK] #64830 - Version 1.3.0 needs checks for compatibility
+	* [CLEANUP] #64835: Adopt current year within copyright
+
+	2014-10-14
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [FEATURE] #54361: For comments implement uniqueCheck
+	* [FEATURE] #59247 - Test field for Akismet check
+	* [FEATURE] #57516 - Akismet check for default mailform (tx_form)
+	* [TASK] #59832: Set tabindex of honeypot to negative value
+	* [BUGFIX] #62238 - Akismet check takes a lot of time
+
+	2014-09-01
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [FEATURE] #58442 - Add hook for custom powermail error messages
+	* [FEATURE] #57513 - Include checks for formhandler
+
+1.2.1
+
+	* Roadmap: https://forge.typo3.org/versions/3001
+
+	2014-05-03
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [TASK] #58448 - Add new logo
+	* [BUGFIX] #58447 - Error with ve_guestbook
+
+1.2.0
+
+	* Roadmap: https://forge.typo3.org/versions/2580
+
+	2014-04-28
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [FEATURE] #57645 - Compatibility with TYPO3 CMS 6.2
+	* [FEATURE] #57523 - Remove fields from global settings in extension manager
+	* [FEATURE] #57512 - Include checks for pbsurvey
+	* [FEATURE] #53574 - Add garbage collection task
+	* [FEATURE] #52840 - Autofill covers honeypot field
+	* [FEATURE] #48612 - Powermail 2.x support
+	* [CLEANUP] #58302, 57944 - code cleanup
+	* [BUGFIX] #53920 - Honeypot field validation
+	
+	Bjoern Jacob <bjoern.jacob@tritum.de>
+
+	* [TASK] #53618 - Documentation on honeypot.inputname is misleading
+	* [TASK] - update of manual
+
+1.1.1
+
+	* Roadmap: https://forge.typo3.org/versions/2534
+
+	2013-11-12
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [FEATURE] #50903 - Use wt_spamshield old mailform on TYPO3 >= 4.6 (add static template)
+	* [BUGFIX] #52455 - Redirect and log doesn’t work in 6.1.4+
+	* [BUGFIX] #51281 - Missing argument 1 for tx_wtspamshield_method_httpcheck::validate()
+
+	Bjoern Jacob <bjoern.jacob@tritum.de>
+
+	* [TASK] - update of manual
+
+1.1.0
+
+	* Roadmap: https://forge.typo3.org/versions/2065
+
+	2013-06-20
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [TASK] - test all extension and all checks with TYPO3 4.5, 4.7, 6.0, 6.1 with Selenium 2
+
+	2013-06-13
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [FEATURE] #49392 - Configurable spam rate for each extension
+	* [FEATURE] - show error messages in email
+	* [FEATURE] - error with direct_mail_subscription
+	* [FEATURE] - ke_userregister compatibility (TYPO3 6.1)
+	* [TASK] - some more code cleanup
+
+	2013-06-10
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [TASK] - remove extensions abstract/ move functions to tx_wtspamshield_div
+	* [TASK] - add getExtConf to tx_wtspamshield_div
+	* [TASK] - get TypoScript configuration from tx_wtspamshield_div
+	* [BUGFIX] - logging - useful title in the backend list view
+	* [BUGFIX] - strip tags in errormessage log
+	* [BUGFIX] - getDiv() calls
+
+	2013-06-05
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [BUGFIX] #48740 - Redirect for ve_guestbook does not work under T3 6.1
+	* [BUGFIX] #48622 - Call to undefined method GeneralUtility::readLLXMLfile()
+	* [BUGFIX] #47454 - wt_spamshield and comments: No function?!
+	* [FEATURE] - logging - useful title in the backend list view
+	* [FEATURE] - TYPO3 coding standards
+	* [TASK] - code cleanup
+
+1.0.2
+
+	2013-05-28
+	Bjoern Jacob <bjoern.jacob@tritum.de>
+
+	* [BUGFIX] #48591 - wt_spamshield BROKEN
+
+1.0.1
+
+	2013-05-28
+	Bjoern Jacob <bjoern.jacob@tritum.de>
+
+	* [BUGFIX] - Missing manual
+	
+1.0.0
+
+	* Roadmap: http://forge.typo3.org/versions/show/2066
+
+	2013-05-27
+	Bjoern Jacob <bjoern.jacob@tritum.de>
+
+	* [UPD] - update of manual
+	* [TASK] - set status to stable, code cleanup
+	* [BUGFIX] #48535 - t3lib_div::int_from_ver() not existent in T3 6.1
+
+	2013-04-30
+	Ralf Zimmermann <ralf.zimmermann@tritum.de>
+
+	* [FEATURE] #48567 - direct_mail_subscription integration
+	* [FEATURE] #33620 - Compatibility with new forms extension (core)
+	* [FEATURE] #31932 - User readable hint to leave honeypot field empty
+	* [FEATURE] #11224 - Explanation/ label for honeypot field
+	* [FEATURE] #10335 - Error messages in locallang.xml
+	* [TASK] - code cleanup, harmonize functions, new folder structure -> ATTENTION: Paths for xclasses have changed!
+	* [BUGFIX] - blacklist no reachable
+
+0.9.0
+
+	* Roadmap: http://forge.typo3.org/versions/show/2064
+
+	2012-12-26
+	Bjoern Jacob <bjoern.jacob@tritum.de>
+
+	* [FEATURE] #44233 - Make Akismet available for powermail 1.x
+	* [FEATURE] #43994 - t3_blog integration
+	* [FEATURE] #31962 - ke_userregister integration
+	* [FEATURE] #12793 - improved http-check
+	* [BUGFIX] #38288 - compatibility with TYPO3 4.7
+	* [BUGFIX] #33545 - Small error in static/settings/setup.txt
+	* [BUGFIX] #32538 - tx_wtspamshield_log.pageid in DB always the same
+	* [BUGFIX] #32079 - message definition on wrong template position
+	* [BUGFIX] #7005 - superfluous tt_news piVars appended when redirected to “spam recognized page”
+
+For older releases/ changes check the documentation.

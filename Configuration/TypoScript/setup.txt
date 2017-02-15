@@ -1,0 +1,254 @@
+plugin.wt_spamshield {
+
+  logging {
+    notificationAddress = {$plugin.wt_spamshield.logging.notificationAddress}
+    pid = {$plugin.wt_spamshield.logging.pid}
+  }
+
+  validators {
+    standardMailform_new {
+      enable = {$plugin.wt_spamshield.validators.standardMailform_new.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.standardMailform_new.how_many_validators_can_fail}
+    }
+    standardMailform_old {
+      enable = {$plugin.wt_spamshield.validators.standardMailform_old.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.standardMailform_old.how_many_validators_can_fail}
+    }
+    powermail {
+      enable = {$plugin.wt_spamshield.validators.powermail.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.powermail.how_many_validators_can_fail}
+    }
+    powermail2 {
+      enable = {$plugin.wt_spamshield.validators.powermail2.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.powermail2.how_many_validators_can_fail}
+    }
+    ve_guestbook {
+      enable = {$plugin.wt_spamshield.validators.ve_guestbook.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.ve_guestbook.how_many_validators_can_fail}
+    }
+    comments {
+      enable = {$plugin.wt_spamshield.validators.comments.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.comments.how_many_validators_can_fail}
+    }
+    t3_blog {
+      enable = {$plugin.wt_spamshield.validators.t3_blog.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.t3_blog.how_many_validators_can_fail}
+    }
+    direct_mail_subscription {
+      enable = {$plugin.wt_spamshield.validators.direct_mail_subscription.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.direct_mail_subscription.how_many_validators_can_fail}
+    }
+    ke_userregister {
+      enable = {$plugin.wt_spamshield.validators.ke_userregister.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.ke_userregister.how_many_validators_can_fail}
+    }
+    pbsurvey {
+      enable = {$plugin.wt_spamshield.validators.pbsurvey.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.pbsurvey.how_many_validators_can_fail}
+    }
+    formhandler {
+      enable = {$plugin.wt_spamshield.validators.formhandler.enable}
+      how_many_validators_can_fail = {$plugin.wt_spamshield.validators.formhandler.how_many_validators_can_fail}
+    }
+  }
+
+  enable {
+    standardMailform = {$plugin.wt_spamshield.mailform}
+    powermail = {$plugin.wt_spamshield.powermail}
+    powermail2 = {$plugin.wt_spamshield.powermail2}
+    ve_guestbook = {$plugin.wt_spamshield.ve_guestbook}
+    comments = {$plugin.wt_spamshield.comments}
+    t3_blog = {$plugin.wt_spamshield.t3_blog}
+    direct_mail_subscription = {$plugin.wt_spamshield.direct_mail_subscription}
+    ke_userregister = {$plugin.wt_spamshield.ke_userregister}
+    pbsurvey = {$plugin.wt_spamshield.pbsurvey}
+    formhandler = {$plugin.wt_spamshield.formhandler}
+  }
+
+  redirect {
+    standardMailform = {$plugin.wt_spamshield.redirect_mailform}
+    ve_guestbook = {$plugin.wt_spamshield.redirect_ve_guestbook}
+  }
+
+  httpCheck {
+    maximumLinkAmount = {$plugin.wt_spamshield.httpCheck.maximumLinkAmount}
+  }
+
+  uniqueCheck {
+    fields = {$plugin.wt_spamshield.uniqueCheck.fields}
+  }
+
+  akismetCheck {
+    akismetKey = {$plugin.wt_spamshield.akismetCheck.akismetKey}
+    testMode = {$plugin.wt_spamshield.akismetCheck.testMode}
+  }
+
+  sessionCheck {
+    sessionStartTime = {$plugin.wt_spamshield.sessionCheck.sessionStartTime}
+    sessionEndTime = {$plugin.wt_spamshield.sessionCheck.sessionEndTime}
+  }
+
+  honeypot {
+    css {
+      inputStyle = {$plugin.wt_spamshield.honeypot.css.inputStyle}
+      inputClass = {$plugin.wt_spamshield.honeypot.css.inputClass}
+    }
+    
+    additionalParams {
+      standard = {$plugin.wt_spamshield.honeypot.additionalParams.standard}
+      html5 = {$plugin.wt_spamshield.honeypot.additionalParams.html5}
+    }
+
+    explanation = TEXT
+    explanation {
+      # must be an entry in localconf.xml
+      value = honeypot.explanation
+      wrap = <label class="wt_spamshield_label wt_spamshield_honey" style="position:absolute; margin:0 0 0 -999em;">|</label>
+    }
+
+    inputname {
+      standardMailform = {$plugin.wt_spamshield.honeypot.inputname.standardMailform}
+      powermail = {$plugin.wt_spamshield.honeypot.inputname.powermail}
+      ve_guestbook = {$plugin.wt_spamshield.honeypot.inputname.ve_guestbook}
+      comments = {$plugin.wt_spamshield.honeypot.inputname.comments}
+      direct_mail_subscription = {$plugin.wt_spamshield.honeypot.inputname.direct_mail_subscription}
+      ke_userregister = {$plugin.wt_spamshield.honeypot.inputname.ke_userregister}
+      pbsurvey = {$plugin.wt_spamshield.honeypot.inputname.pbsurvey}
+      formhandler = {$plugin.wt_spamshield.honeypot.inputname.formhandler}
+    }
+  }
+
+  # at the moment we only support TEXT
+  errors {
+    blacklist = TEXT
+    blacklist {
+      # must be an entry in localconf.xml
+      value = blacklist.error
+      wrap = <p class="wt_spamshield_error">|</p>
+    }
+    akismet = TEXT
+    akismet {
+      # must be an entry in localconf.xml
+      value = akismet.error
+      wrap = <p class="wt_spamshield_error">|</p>
+    }
+    honeypot = TEXT
+    honeypot {
+      # must be an entry in localconf.xml
+      value = honeypot.error
+      wrap = <p class="wt_spamshield_error">|</p>
+    }
+    httpCheck = TEXT
+    httpCheck {
+      # must be an entry in localconf.xml
+      value = httpCheck.error
+      wrap = <p class="wt_spamshield_error">|</p>
+    }
+    nameCheck = TEXT
+    nameCheck {
+      # must be an entry in localconf.xml
+      value = nameCheck.error
+      wrap = <p class="wt_spamshield_error">|</p>
+    }
+    session_error_1 = TEXT
+    session_error_1 {
+      # must be an entry in localconf.xml
+      value = session.error.1
+      wrap = <p class="wt_spamshield_error">|</p>
+    }
+    session_error_2 = TEXT
+    session_error_2 {
+      # must be an entry in localconf.xml
+      value = session.error.2
+      wrap = <p class="wt_spamshield_error">|</p>
+    }
+    session_error_3 = TEXT
+    session_error_3 {
+      # must be an entry in localconf.xml
+      value = session.error.3
+      wrap = <p class="wt_spamshield_error">|</p>
+    }
+    uniquecheck = TEXT
+    uniquecheck {
+      # must be an entry in localconf.xml
+      value = uniquecheck.error
+      wrap = <p class="wt_spamshield_error">|</p>
+    }
+  }
+
+  fields {
+    comments {
+      author = lastname
+      email = email
+      homepage = homepage
+      body = content
+      permalink = homepage
+    }
+    direct_mail_subscription {
+      author = last_name
+      email = email
+      homepage =
+      body =
+      permalink =
+    }
+    ke_userregister {
+      author = last_name
+      email = email
+      homepage =
+      body =
+      permalink =
+    }
+    powermail {
+      author =
+      email =
+      homepage =
+      body =
+      permalink =
+    }
+    powermail2 {
+      author =
+      email =
+      homepage =
+      body =
+      permalink = 
+    }
+    t3_blog {
+      author = author
+      email = email
+      homepage = website
+      body = text
+      permalink = website
+    }
+    ve_guestbook {
+      author = surname
+      email = email
+      homepage = homepage
+      body = entry
+      permalink = homepage
+    }
+    formhandler {
+      author =
+      email =
+      homepage =
+      body =
+      permalink =
+    }
+    standardMailform {
+      author = name
+      email = email
+      homepage = homepage
+      body = msg
+      permalink = homepage
+    }
+  }
+}
+
+plugin.tx_keuserregister {
+  create.fields {
+    # create field for error messages
+    wt_spamshield {    
+      type = text
+      doNotSaveInDB = 1
+    }
+  }
+}

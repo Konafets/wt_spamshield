@@ -1,0 +1,13 @@
+# wt_spamshield: Include protection for standard mailform
+# only needed by TYPO3 <= 4.5
+includeLibs.spamshield = EXT:wt_spamshield/Classes/Extensions/class.tx_wtspamshield_defaultmailform.php
+
+tt_content.mailform = COA_INT
+tt_content.mailform {
+  20.stdWrap {
+    preUserFunc = tx_wtspamshield_defaultmailform->generateSession
+    preUserFunc.ifOutdated = 1
+    innerWrap = | <input name="uid987651" type="text" autocomplete="off" style="position: absolute; margin: 0 0 0 -9999px;" value="" />
+  }
+  20.no_cache = 1
+}

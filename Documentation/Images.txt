@@ -1,0 +1,6 @@
+.. |img-1|      image:: Images/wt_spamshield_logo.png
+   :height: 122
+   :width: 124
+.. :align: left
+.. :border: 0
+.. :name: Logo wt_spamshield
