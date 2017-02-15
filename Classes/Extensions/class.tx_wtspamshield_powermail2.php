@@ -104,5 +104,3 @@ class tx_wtspamshield_powermail2 extends Tx_Powermail_Domain_Validator_CustomVal
 		}
 	}
 }
-
-?>

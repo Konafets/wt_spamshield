@@ -143,4 +143,3 @@ class WtspamshieldValidator extends \TYPO3\CMS\Form\Validation\AbstractValidator
 	}
 
 }
-?>

@@ -29,4 +29,3 @@ $return = array(
 );
 
 return $return;
-?>

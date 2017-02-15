@@ -39,5 +39,3 @@ $TCA['tx_wtspamshield_blacklist'] = array (
 		'1' => array('showitem' => '')
 	)
 );
-
-?>

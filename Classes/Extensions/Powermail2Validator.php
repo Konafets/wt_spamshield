@@ -116,5 +116,3 @@ class Powermail2Validator extends \In2code\Powermail\Domain\Validator\StringVali
 		}
 	}
 }
-
-?>

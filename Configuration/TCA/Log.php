@@ -89,5 +89,3 @@ $TCA['tx_wtspamshield_log'] = array (
 		'1' => array('showitem' => '')
 	)
 );
-
-?>

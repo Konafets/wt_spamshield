@@ -193,5 +193,3 @@ if (defined('TYPO3_MODE')
 ) {
 	require_once ($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wt_spamshield/Classes/Extensions/class.tx_wtspamshield_ve_guestbook.php']);
 }
-
-?>

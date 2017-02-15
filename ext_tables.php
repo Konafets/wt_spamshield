@@ -48,4 +48,3 @@ $TCA['tx_wtspamshield_blacklist'] = array (
 	)
 );
 
-?>

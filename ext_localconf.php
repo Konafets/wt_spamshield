@@ -117,4 +117,3 @@ if ($t3Version >= 6000000) {
 		'expirePeriod' => 180,
 	);
 }
-?>
