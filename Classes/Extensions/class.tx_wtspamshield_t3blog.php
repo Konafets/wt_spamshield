@@ -127,9 +127,4 @@ class tx_wtspamshield_t3blog extends tslib_pibase {
 		return $error;
 	}
 }
-
-if (defined('TYPO3_MODE')
-	&& isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wt_spamshield/Classes/Extensions/class.tx_wtspamshield_t3blog.php'])
-) {
-	require_once ($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wt_spamshield/Classes/Extensions/class.tx_wtspamshield_t3blog.php']);
 }

@@ -145,9 +145,4 @@ class tx_wtspamshield_akismet_httpclient extends tx_wtspamshield_akismet_object 
 		return true;
 	}
 }
-
-if (defined('TYPO3_MODE')
-	&& isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wt_spamshield/Classes/System/class.tx_wtspamshield_akismet_httpclient.php'])
-) {
-	require_once ($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wt_spamshield/Classes/System/class.tx_wtspamshield_akismet_httpclient.php']);
 }

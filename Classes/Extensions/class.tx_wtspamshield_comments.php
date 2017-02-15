@@ -161,9 +161,4 @@ class tx_wtspamshield_comments extends tslib_pibase {
 		return $processor->currentFailures * 1000;
 	}
 }
-
-if (defined('TYPO3_MODE')
-	&& isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wt_spamshield/Classes/Extensions/class.tx_wtspamshield_comments.php'])
-) {
-	require_once ($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wt_spamshield/Classes/Extensions/class.tx_wtspamshield_comments.php']);
 }

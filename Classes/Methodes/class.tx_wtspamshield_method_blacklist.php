@@ -134,10 +134,4 @@ class tx_wtspamshield_method_blacklist extends tx_wtspamshield_method_abstract {
 	}
 
 }
-
-if (defined('TYPO3_MODE')
-	&& isset($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wt_spamshield/Classes/Methodes/class.tx_wtspamshield_method_blacklist.php'])
-) {
-	require_once ($GLOBALS['TYPO3_CONF_VARS'][TYPO3_MODE]['XCLASS']['ext/wt_spamshield/Classes/Methodes/class.tx_wtspamshield_method_blacklist.php']);
 }
-
